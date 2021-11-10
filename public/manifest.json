@@ -8,5 +8,11 @@
     "default_title": "scrapbox-list-marker",
     "default_popup": "index.html"
   },
-  "permissions": []
+  "content_scripts": [
+    {
+      "matches": ["https://scrapbox.io/*/"],
+      "js": ["test.js"]
+    }
+  ],
+  "permissions": ["activeTab"]
 }
