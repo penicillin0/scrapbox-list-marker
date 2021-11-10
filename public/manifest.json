@@ -10,7 +10,7 @@
   },
   "content_scripts": [
     {
-      "matches": ["https://scrapbox.io/*/"],
+      "matches": ["https://scrapbox.io/*/*"],
       "js": ["test.js"]
     }
   ],
