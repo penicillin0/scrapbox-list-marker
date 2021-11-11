@@ -10,7 +10,6 @@ module.exports = {
     'eslint:recommended',
     'eslint-config-google',
     'plugin:react/recommended',
-    'plugin:react/jsx-runtime',
     'prettier',
   ],
   plugins: ['react'],
