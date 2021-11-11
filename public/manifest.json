@@ -14,5 +14,5 @@
       "js": ["test.js"]
     }
   ],
-  "permissions": ["activeTab"]
+  "permissions": ["activeTab", "storage"]
 }
