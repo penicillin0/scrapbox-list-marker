@@ -14,7 +14,7 @@ module.exports = {
   ],
   plugins: ['react'],
   parserOptions: {
-    ecmaVersion: 13,
+    ecmaVersion: 2018,
     sourceType: 'module',
     ecmaFeatures: {
       jsx: true,
@@ -26,6 +26,7 @@ module.exports = {
     'require-jsdoc': 'off',
     'react/jsx-uses-react': 'error',
     'react/jsx-uses-vars': 'error',
+    'no-unused-vars': 'warn',
   },
   settings: {
     react: {
