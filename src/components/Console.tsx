@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import Select from 'react-select';
+import Select, { ActionMeta, SingleValue } from 'react-select';
 
 const options = [
   { value: '●', label: '●' },
@@ -15,8 +15,15 @@ const initialState = [
   { value: '○', label: 'indent-4' },
 ];
 
-export const Console = () => {
-  const [indentOptions, setIndentOptions] = useState(initialState);
+type Props = Record<string, never>;
+
+export const Console: React.FC<Props> = () => {
+  const [indentOptions, setIndentOptions] = useState<
+    {
+      value: string;
+      label: string;
+    }[]
+  >(initialState);
 
   useEffect(() => {
     const scrapboxIndentOption = localStorage.getItem('scrapboxIndentOption');
@@ -32,8 +39,18 @@ export const Console = () => {
     }
   }, []);
 
-  const handleOnChange = (newValue, metaAction) => {
-    const value = newValue.value;
+  const handleOnChange = (
+    newValue: SingleValue<{
+      value: string;
+      label: string;
+    }>,
+    metaAction: ActionMeta<{
+      value: string;
+      label: string;
+    }>
+  ) => {
+    // eslint-disable-next-line
+    const value = newValue!.value;
     const label = metaAction.name;
 
     const newIndentOptions = indentOptions.map((option) => {
@@ -44,6 +61,7 @@ export const Console = () => {
     });
 
     setIndentOptions(newIndentOptions);
+
     localStorage.setItem(
       'scrapboxIndentOption',
       JSON.stringify(newIndentOptions)

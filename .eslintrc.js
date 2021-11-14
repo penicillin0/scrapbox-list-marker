@@ -1,36 +1,27 @@
 module.exports = {
-  root: true,
   env: {
     browser: true,
+    es2021: true,
     node: true,
-    webextensions: true,
-    es6: true,
   },
   extends: [
     'eslint:recommended',
-    'eslint-config-google',
     'plugin:react/recommended',
-    'prettier',
+    'plugin:@typescript-eslint/recommended',
   ],
-  plugins: ['react'],
+  parser: '@typescript-eslint/parser',
   parserOptions: {
-    ecmaVersion: 2018,
-    sourceType: 'module',
     ecmaFeatures: {
       jsx: true,
     },
-  },
-  ignorePatterns: ['/src/icon/*'],
-  rules: {
-    'no-console': 'warn',
-    'require-jsdoc': 'off',
-    'react/jsx-uses-react': 'error',
-    'react/jsx-uses-vars': 'error',
-    'no-unused-vars': 'warn',
+    ecmaVersion: 12,
+    sourceType: 'module',
   },
   settings: {
     react: {
       version: 'detect',
     },
   },
+  plugins: ['react', '@typescript-eslint'],
+  rules: {},
 };
