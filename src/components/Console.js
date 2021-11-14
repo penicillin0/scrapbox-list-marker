@@ -27,8 +27,9 @@ export const Console = () => {
         JSON.stringify(initialState)
       );
       setIndentOptions(initialState);
+    } else {
+      setIndentOptions(JSON.parse(scrapboxIndentOption));
     }
-    setIndentOptions(JSON.parse(scrapboxIndentOption));
   }, []);
 
   const handleOnChange = (newValue, metaAction) => {
@@ -66,7 +67,7 @@ export const Console = () => {
               ></Select>
             );
           })
-        : null}
+        : 'keyがないよ'}
     </>
   );
 };
