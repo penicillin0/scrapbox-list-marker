@@ -26,17 +26,16 @@ export const Console: React.FC<Props> = () => {
   >(initialState);
 
   useEffect(() => {
-    const scrapboxIndentOption = localStorage.getItem('scrapboxIndentOption');
+    chrome.storage.local.get('scrapboxIndentOption', (result) => {
+      const scrapboxIndentOption = result.scrapboxIndentOption;
 
-    if (!scrapboxIndentOption) {
-      localStorage.setItem(
-        'scrapboxIndentOption',
-        JSON.stringify(initialState)
-      );
-      setIndentOptions(initialState);
-    } else {
-      setIndentOptions(JSON.parse(scrapboxIndentOption));
-    }
+      if (!scrapboxIndentOption) {
+        chrome.storage.local.set({ scrapboxIndentOption: initialState });
+        setIndentOptions(initialState);
+      } else {
+        setIndentOptions(scrapboxIndentOption);
+      }
+    });
   }, []);
 
   const handleOnChange = (
@@ -62,10 +61,11 @@ export const Console: React.FC<Props> = () => {
 
     setIndentOptions(newIndentOptions);
 
-    localStorage.setItem(
-      'scrapboxIndentOption',
-      JSON.stringify(newIndentOptions)
-    );
+    // localStorage.setItem(
+    //   'scrapboxIndentOption',
+    //   JSON.stringify(newIndentOptions)
+    // );
+    chrome.storage.local.set({ scrapboxIndentOption: newIndentOptions });
 
     chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
       tabs.forEach((tab) => {
