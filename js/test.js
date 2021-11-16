@@ -42,3 +42,10 @@ const insertIndentCSSRule = (indentNum) => {
 for (let i = 1; i < 20; i++) {
   insertIndentCSSRule(i);
 }
+
+chrome.runtime.onMessage.addListener((request) => {
+  if (request === 'scrapbox_list_maker') {
+    const scrapboxIndentOption = localStorage.getItem('scrapboxIndentOption');
+    console.log(scrapboxIndentOption);
+  }
+});

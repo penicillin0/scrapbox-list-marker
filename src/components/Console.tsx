@@ -66,6 +66,17 @@ export const Console: React.FC<Props> = () => {
       'scrapboxIndentOption',
       JSON.stringify(newIndentOptions)
     );
+
+    chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
+      tabs.forEach((tab) => {
+        if (tab.url === undefined || tab.id === undefined) return;
+
+        const url = new URL(tab.url);
+        if (url.hostname === 'scrapbox.io') {
+          chrome.tabs.sendMessage(tab.id, 'scrapbox_list_maker');
+        }
+      });
+    });
   };
 
   return (
