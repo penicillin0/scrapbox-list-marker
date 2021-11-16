@@ -45,7 +45,9 @@ for (let i = 1; i < 20; i++) {
 
 chrome.runtime.onMessage.addListener((request) => {
   if (request === 'scrapbox_list_maker') {
-    const scrapboxIndentOption = localStorage.getItem('scrapboxIndentOption');
-    console.log(scrapboxIndentOption);
+    chrome.storage.local.get('scrapboxIndentOption', (result) => {
+      const scrapboxIndentOption = result.scrapboxIndentOption;
+      console.log(scrapboxIndentOption);
+    });
   }
 });
