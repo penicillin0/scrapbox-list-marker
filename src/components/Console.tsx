@@ -9,10 +9,10 @@ const options = [
 ];
 
 const initialState = [
-  { value: '○', label: 'indent-1' },
-  { value: '○', label: 'indent-2' },
-  { value: '○', label: 'indent-3' },
-  { value: '○', label: 'indent-4' },
+  { value: '●', label: 'indent-1' },
+  { value: '●', label: 'indent-2' },
+  { value: '●', label: 'indent-3' },
+  { value: '●', label: 'indent-4' },
 ];
 
 type Props = Record<string, never>;
