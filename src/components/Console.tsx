@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import Select, { ActionMeta, SingleValue } from 'react-select';
+import styled from 'styled-components';
 
 const options = [
   { value: '●', label: '●' },
@@ -76,21 +77,99 @@ export const Console: React.FC<Props> = () => {
   };
 
   return (
-    <>
-      {indentOptions.map((indentOption) => {
-        return (
-          <Select
-            value={{
-              value: indentOption.value,
-              label: indentOption.value,
-            }}
-            onChange={handleOnChange}
-            key={indentOption.label}
-            name={indentOption.label}
-            options={options}
-          ></Select>
-        );
-      })}
-    </>
+    <MainContainer>
+      <Title>Select Favorite List-Maker</Title>
+      <IndentContainer>
+        {indentOptions.map((indentOption) => {
+          const spaceNum = +indentOption.label.replace(/[^0-9]/g, '') - 1;
+
+          return (
+            <>
+              <IndentRow spaceNum={spaceNum}>
+                <Select
+                  value={{
+                    value: indentOption.value,
+                    label: indentOption.value,
+                  }}
+                  onChange={handleOnChange}
+                  key={indentOption.label}
+                  name={indentOption.label}
+                  options={options}
+                ></Select>
+                <Label>{indentOption.label}</Label>
+              </IndentRow>
+            </>
+          );
+        })}
+      </IndentContainer>
+
+      <Spacer heightPx={2} />
+
+      <Title>Demonstration</Title>
+      <DemonstrationContainer>
+        <IndentContainer>
+          {indentOptions.map((indentOption) => {
+            const spaceNum = +indentOption.label.replace(/[^0-9]/g, '') - 1;
+            return [...Array(spaceNum + 1)].map(() => {
+              return (
+                <>
+                  <IndentRow spaceNum={spaceNum * 0.8}>
+                    {indentOption.value}
+                    &nbsp;&nbsp;&nbsp;
+                    {indentOption.label}
+                  </IndentRow>
+                </>
+              );
+            });
+          })}
+        </IndentContainer>
+      </DemonstrationContainer>
+    </MainContainer>
   );
 };
+
+// return (
+//   <>
+//     <IndentRow spaceNum={spaceNum * 0.8}>
+//       {indentOption.value}
+//       &nbsp;&nbsp;&nbsp;
+//       {indentOption.label}
+//     </IndentRow>
+//   </>
+// );
+
+const MainContainer = styled.div`
+  margin: 5px;
+  padding-left: 5px;
+`;
+
+const Title = styled.div`
+  font-size: 18px;
+  text-align: left;
+  margin: 14px 10px;
+`;
+
+const Label = styled.div`
+  font-size: 14px;
+  margin-left: 12px;
+`;
+
+const IndentContainer = styled.div`
+  margin: 0px 10px;
+`;
+
+const IndentRow = styled.div<{ spaceNum: number }>`
+  margin-left: ${(props) => `${props.spaceNum * 30}px`};
+  margin-top: 9px;
+  margin-bottom: 9px;
+  display: flex;
+  align-items: center;
+`;
+
+const Spacer = styled.div<{ heightPx: number }>`
+  height: ${(props) => `${props.heightPx}px`};
+`;
+
+const DemonstrationContainer = styled.div`
+  margin-left: 12px;
+`;
