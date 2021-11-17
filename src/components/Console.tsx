@@ -103,50 +103,41 @@ export const Console: React.FC<Props> = () => {
         })}
       </IndentContainer>
 
-      <Spacer heightPx={2} />
-
-      <Title>Demonstration</Title>
       <DemonstrationContainer>
-        <IndentContainer>
-          {indentOptions.map((indentOption) => {
-            const spaceNum = +indentOption.label.replace(/[^0-9]/g, '') - 1;
-            return [...Array(spaceNum + 1)].map(() => {
-              return (
-                <>
-                  <IndentRow spaceNum={spaceNum * 0.8}>
-                    {indentOption.value}
-                    &nbsp;&nbsp;&nbsp;
-                    {indentOption.label}
-                  </IndentRow>
-                </>
-              );
-            });
-          })}
-        </IndentContainer>
+        <Demonstration>
+          <Title>Demonstration</Title>
+          <IndentContainer>
+            {indentOptions.map((indentOption) => {
+              const spaceNum = +indentOption.label.replace(/[^0-9]/g, '') - 1;
+              return [...Array(spaceNum + 1)].map(() => {
+                return (
+                  <>
+                    <IndentRow spaceNum={spaceNum * 0.8}>
+                      {indentOption.value}
+                      &nbsp;&nbsp;&nbsp;
+                      {indentOption.label}
+                    </IndentRow>
+                  </>
+                );
+              });
+            })}
+          </IndentContainer>
+        </Demonstration>
       </DemonstrationContainer>
     </MainContainer>
   );
 };
 
-// return (
-//   <>
-//     <IndentRow spaceNum={spaceNum * 0.8}>
-//       {indentOption.value}
-//       &nbsp;&nbsp;&nbsp;
-//       {indentOption.label}
-//     </IndentRow>
-//   </>
-// );
-
 const MainContainer = styled.div`
-  margin: 5px;
-  padding-left: 5px;
+  background-color: #dcdde0;
+  padding: 4px;
+  padding-bottom: 8px;
 `;
 
 const Title = styled.div`
   font-size: 18px;
   text-align: left;
-  margin: 14px 10px;
+  margin: 12px 10px;
 `;
 
 const Label = styled.div`
@@ -160,16 +151,22 @@ const IndentContainer = styled.div`
 
 const IndentRow = styled.div<{ spaceNum: number }>`
   margin-left: ${(props) => `${props.spaceNum * 30}px`};
-  margin-top: 9px;
-  margin-bottom: 9px;
+  margin-top: 6px;
+  margin-bottom: 6px;
   display: flex;
   align-items: center;
 `;
 
-const Spacer = styled.div<{ heightPx: number }>`
-  height: ${(props) => `${props.heightPx}px`};
+const DemonstrationContainer = styled.div`
+  margin: 14px;
+  padding: 6px 0px;
+  background-color: #fefefe;
+  border-radius: 2%;
+  box-shadow: 0px 5px 5px -3px #9e9e9e;
 `;
 
-const DemonstrationContainer = styled.div`
-  margin-left: 12px;
+const Demonstration = styled.div`
+  padding: 0px 10px;
+  border-left: 5px solid #808b8c;
+  box-sizing: border-box;
 `;

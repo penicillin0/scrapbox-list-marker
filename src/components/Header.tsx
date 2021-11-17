@@ -5,20 +5,20 @@ type Props = Record<string, never>;
 
 export const Header: React.FC<Props> = () => {
   return (
-    <>
-      <Main>
-        <Title>Scrapbox List Marker</Title>
-      </Main>
-    </>
+    <Main>
+      <Title>Scrapbox List Marker</Title>
+    </Main>
   );
 };
 
 const Main = styled.div`
-  height: 60px;
+  height: 54px;
   display: flex;
   align-items: center;
   justify-content: center;
-  background-color: #01b52d;
+  background-color: #01b52ebd;
+  box-shadow: 0px 2px 3px 0px #9e9e9e;
+  position: relative;
 `;
 
 const Title = styled.p`
