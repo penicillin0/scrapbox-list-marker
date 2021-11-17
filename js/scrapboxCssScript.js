@@ -1,11 +1,16 @@
 'use strict';
 
-const stylesheet = document.styleSheets[0];
-
-stylesheet.cssRules[1384].style.backgroundColor = 'rgb(230, 255, 255)';
 const indentCSSRule = new Map([
   [
-    '1',
+    '●',
+    {
+      before: ' .c-',
+      after:
+        ' + .dot {height: .4em !important;width: .4em !important;border-color: black !important;border: solid .1em rgba(0,0,0,0.65) !important;background-color: rgba(0,0,0,0.65) !important;}',
+    },
+  ],
+  [
+    '○',
     {
       before: ' .c-',
       after:
@@ -13,7 +18,7 @@ const indentCSSRule = new Map([
     },
   ],
   [
-    '2',
+    '■',
     {
       before: ' .c-',
       after:
@@ -21,7 +26,7 @@ const indentCSSRule = new Map([
     },
   ],
   [
-    '3',
+    '□',
     {
       before: ' .c-',
       after:
@@ -30,24 +35,48 @@ const indentCSSRule = new Map([
   ],
 ]);
 
-const insertIndentCSSRule = (indentNum) => {
-  const modNum = String(indentNum % 4);
-  if (modNum === '0') return;
+const insertIndentCSSRule = (scrapboxIndentOptions) => {
+  // delete existing rules
+  const cssRules = document.styleSheets[0].cssRules;
+  const cssRulesNum = cssRules.length;
+  for (let i = cssRulesNum - 1; i >= 0; i--) {
+    const cssRule = cssRules[i];
+    const cssSelector = cssRule.selectorText;
 
-  const before = indentCSSRule.get(modNum).before;
-  const after = indentCSSRule.get(modNum).after;
-  stylesheet.insertRule(before + indentNum + after);
+    if (cssSelector === undefined) continue;
+
+    if (cssSelector.match(/^(\.(c-\d+) \+ \.dot)$/)) {
+      document.styleSheets[0].deleteRule(i);
+    }
+  }
+
+  // insert new rules
+  scrapboxIndentOptions.map((scrapboxIndentOption) => {
+    const indentNum = Number(scrapboxIndentOption.label.replace(/[^0-9]/g, ''));
+
+    for (let i = 0; i < 20; i++) {
+      if (i % 4 === indentNum - 1) {
+        const before = indentCSSRule.get(scrapboxIndentOption.value).before;
+        const after = indentCSSRule.get(scrapboxIndentOption.value).after;
+        document.styleSheets[0].insertRule(before + String(i) + after);
+      }
+    }
+  });
 };
 
-for (let i = 1; i < 20; i++) {
-  insertIndentCSSRule(i);
-}
+const storageAttachment = () => {
+  chrome.storage.local.get('scrapboxIndentOption', (result) => {
+    const scrapboxIndentOptions = result.scrapboxIndentOption;
+    insertIndentCSSRule(scrapboxIndentOptions);
+  });
+};
 
+// update
 chrome.runtime.onMessage.addListener((request) => {
   if (request === 'scrapbox_list_maker') {
-    chrome.storage.local.get('scrapboxIndentOption', (result) => {
-      const scrapboxIndentOption = result.scrapboxIndentOption;
-      console.log(scrapboxIndentOption);
-    });
+    storageAttachment();
   }
 });
+
+// initialize
+storageAttachment();
