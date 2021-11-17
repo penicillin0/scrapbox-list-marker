@@ -1,5 +1,5 @@
 
-# <img src="https://user-images.githubusercontent.com/56141035/142174422-108d2773-7780-4c4d-a9b5-0564c5ad4c3d.png" width=5%> Scrapbox List Marker 0.0.1
+# <img src="https://user-images.githubusercontent.com/56141035/142188980-988dc6f8-2c4c-4158-8573-d12a5be04479.png" width=5%> Scrapbox List Marker 0.0.1
 <b>Customize the scrapbox list marker.</b>
 
 This is a third party chrome extension for Scrapbox users.<br>
