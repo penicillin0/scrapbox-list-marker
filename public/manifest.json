@@ -5,7 +5,7 @@
   "manifest_version": 3,
 
   "action": {
-    "default_title": "scrapbox-list-marker",
+    "default_title": "Scrapbox List Marker",
     "default_popup": "index.html"
   },
   "content_scripts": [
