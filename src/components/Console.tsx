@@ -78,7 +78,7 @@ export const Console: React.FC<Props> = () => {
 
   return (
     <MainContainer>
-      <Title>Select Favorite List-Maker</Title>
+      <Title>Select Favorite List Maker</Title>
       <IndentContainer>
         {indentOptions.map((indentOption) => {
           const spaceNum = +indentOption.label.replace(/[^0-9]/g, '') - 1;
