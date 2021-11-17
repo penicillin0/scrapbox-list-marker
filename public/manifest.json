@@ -14,5 +14,10 @@
       "js": ["scrapboxCssScript.js"]
     }
   ],
-  "permissions": ["activeTab", "storage"]
+  "permissions": ["activeTab", "storage"],
+  "icons": {
+    "16": "images/16icon.png",
+    "48": "images/48icon.png",
+    "128": "images/128icon.png"
+  }
 }
