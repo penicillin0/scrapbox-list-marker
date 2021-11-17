@@ -1,4 +1,4 @@
-<img src="https://user-images.githubusercontent.com/56141035/142189456-8b0ed095-a2ca-4f90-a618-679c8f5ee495.png" width=80%>
+<img src="https://user-images.githubusercontent.com/56141035/142194448-ba244c30-3fdb-4e2e-9c59-0cd92fc55120.jpg" width=80%>
 
 # <img src="https://user-images.githubusercontent.com/56141035/142188980-988dc6f8-2c4c-4158-8573-d12a5be04479.png" width=5%> Scrapbox List Marker 0.0.1
 <b>Customize the scrapbox list marker.</b>
