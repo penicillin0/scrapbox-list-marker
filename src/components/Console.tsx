@@ -61,10 +61,6 @@ export const Console: React.FC<Props> = () => {
 
     setIndentOptions(newIndentOptions);
 
-    // localStorage.setItem(
-    //   'scrapboxIndentOption',
-    //   JSON.stringify(newIndentOptions)
-    // );
     chrome.storage.local.set({ scrapboxIndentOption: newIndentOptions });
 
     chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
@@ -81,22 +77,20 @@ export const Console: React.FC<Props> = () => {
 
   return (
     <>
-      {indentOptions
-        ? indentOptions.map((indentOption) => {
-            return (
-              <Select
-                value={{
-                  value: indentOption.value,
-                  label: indentOption.value,
-                }}
-                onChange={handleOnChange}
-                key={indentOption.label}
-                name={indentOption.label}
-                options={options}
-              ></Select>
-            );
-          })
-        : 'keyがないよ'}
+      {indentOptions.map((indentOption) => {
+        return (
+          <Select
+            value={{
+              value: indentOption.value,
+              label: indentOption.value,
+            }}
+            onChange={handleOnChange}
+            key={indentOption.label}
+            name={indentOption.label}
+            options={options}
+          ></Select>
+        );
+      })}
     </>
   );
 };
