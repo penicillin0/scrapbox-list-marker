@@ -135,7 +135,7 @@ const MainContainer = styled.div`
 `;
 
 const Title = styled.div`
-  font-size: 18px;
+  font-size: 16px;
   text-align: left;
   margin: 12px 10px;
 `;
