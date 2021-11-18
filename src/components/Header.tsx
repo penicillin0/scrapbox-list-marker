@@ -1,4 +1,6 @@
 import React from 'react';
+import { IconContext } from 'react-icons';
+import { FaGithub } from 'react-icons/fa';
 import styled from 'styled-components';
 import Icon from '../images/icon.png';
 
@@ -9,8 +11,23 @@ export const Header: React.FC<Props> = () => {
     <Main>
       <Image src={Icon} />
       <Title>Scrapbox List Marker</Title>
+      <IconContext.Provider value={githubIconConfig}>
+        <a
+          href="https://github.com/penicillin0/scrapbox-list-marker"
+          target="_blank"
+          rel="noreferrer"
+        >
+          <FaGithub />
+        </a>
+      </IconContext.Provider>
     </Main>
   );
+};
+
+const githubIconConfig = {
+  color: '#444',
+  size: '22px',
+  style: { paddingLeft: '52px' },
 };
 
 const Main = styled.div`
