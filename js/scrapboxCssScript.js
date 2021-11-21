@@ -89,12 +89,12 @@ const indentColorCSS = [
       --scrapbox-indent-maker-red:  rgba(255,127,255, var(--scrapbox-indent-maker-opacity));
       --scrapbox-indent-maker-blue:   rgba(79,236,236, var(--scrapbox-indent-maker-opacity));
   }`,
-  `.indent-mark .char-index:nth-child(4n+1) { background-color: var(--scrapbox-indent-maker-yellow) }`,
-  `.indent-mark .char-index:nth-child(4n+2) { background-color: var(--scrapbox-indent-maker-green) }`,
-  `.indent-mark .char-index:nth-child(4n+3) { background-color: var(--scrapbox-indent-maker-red) }`,
-  `.indent-mark .char-index:nth-child(4n) { background-color: var(--scrapbox-indent-maker-blue) }`,
-  `.indent-mark .char-index:nth-last-child(2) { background-color: transparent !important; }`,
-  `.indent-mark .char-index:nth-last-child(1) { background-color: transparent !important; }`,
+  `.app:not(.presentation) .indent-mark .char-index:nth-child(4n+1) { background-color: var(--scrapbox-indent-maker-yellow) }`,
+  `.app:not(.presentation) .indent-mark .char-index:nth-child(4n+2) { background-color: var(--scrapbox-indent-maker-green) }`,
+  `.app:not(.presentation) .indent-mark .char-index:nth-child(4n+3) { background-color: var(--scrapbox-indent-maker-red) }`,
+  `.app:not(.presentation) .indent-mark .char-index:nth-child(4n) { background-color: var(--scrapbox-indent-maker-blue) }`,
+  `.app:not(.presentation) .indent-mark .char-index:nth-last-child(2) { background-color: transparent !important; }`,
+  `.app:not(.presentation) .indent-mark .char-index:nth-last-child(1) { background-color: transparent !important; }`,
 ];
 
 const insertIndentColorCSSRule = () => {
