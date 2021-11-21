@@ -64,23 +64,6 @@ const insertIndentCSSRule = (scrapboxIndentOptions) => {
   });
 };
 
-const makerAttachment = () => {
-  chrome.storage.local.get('scrapboxIndentOption', (result) => {
-    const scrapboxIndentOptions = result.scrapboxIndentOption;
-    insertIndentCSSRule(scrapboxIndentOptions);
-  });
-};
-
-// update
-chrome.runtime.onMessage.addListener((request) => {
-  if (request === 'scrapbox_list_maker') {
-    makerAttachment();
-  }
-});
-
-// initialize
-makerAttachment();
-
 const indentColorCSS = [
   `.indent-mark .char-index{
       --scrapbox-indent-maker-opacity: 0.2;
@@ -97,12 +80,57 @@ const indentColorCSS = [
   `.app:not(.presentation) .indent-mark .char-index:nth-last-child(1) { background-color: transparent !important; }`,
 ];
 
-const insertIndentColorCSSRule = () => {
+const insertIndentColorCSSRule = (isColoring) => {
+  // delete existing rules
+  const cssRules = document.styleSheets[0].cssRules;
+  const cssRulesNum = cssRules.length;
+  for (let i = cssRulesNum - 1; i >= 0; i--) {
+    const cssRule = cssRules[i];
+    const cssSelector = cssRule.selectorText;
+
+    if (cssSelector === undefined) continue;
+
+    if (
+      cssSelector.match(
+        /^\.app:not\(.presentation\) \.indent-mark \.char-index:nth-child.*/
+      )
+    ) {
+      document.styleSheets[0].deleteRule(i);
+    }
+  }
+
   // insert new rules
-  indentColorCSS.map((css) => {
-    console.log(css);
-    document.styleSheets[0].insertRule(css);
+  if (isColoring) {
+    indentColorCSS.map((css) => {
+      document.styleSheets[0].insertRule(css);
+    });
+  }
+};
+
+const makerAttachment = () => {
+  chrome.storage.local.get('scrapboxIndentOption', (result) => {
+    const scrapboxIndentOptions = result.scrapboxIndentOption;
+    insertIndentCSSRule(scrapboxIndentOptions);
   });
 };
 
-insertIndentColorCSSRule();
+const coloringAttachment = () => {
+  chrome.storage.local.get('scrapboxIndentColoring', (result) => {
+    const isColoring = result.scrapboxIndentColoring;
+    insertIndentColorCSSRule(isColoring);
+  });
+};
+
+// update
+chrome.runtime.onMessage.addListener((request) => {
+  if (request === 'scrapbox_list_maker') {
+    makerAttachment();
+  }
+  if (request === 'scrapbox_indent_coloring') {
+    coloringAttachment();
+  }
+});
+
+// initialize
+makerAttachment();
+coloringAttachment();
