@@ -10,7 +10,7 @@ However, writing CSS is time-consuming and complicated to change.<br>
 This extension allows you to change Scrapbox's list markers to your liking using a GUI-based interface.
 
 # Installation
-Under review... Please wait.
+[Chrome extension store](https://chrome.google.com/webstore/detail/scrapbox-list-marker/blogedecchmdohakakhmboefiiendbec)
 
 # License
 [MIT](https://opensource.org/licenses/MIT)
