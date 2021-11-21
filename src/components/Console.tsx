@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import Select, { ActionMeta, SingleValue } from 'react-select';
+import Switch from 'react-switch';
 import styled from 'styled-components';
 
 const options = [
@@ -78,7 +79,26 @@ export const Console: React.FC<Props> = () => {
 
   return (
     <MainContainer>
-      <Title>Select Favorite List Maker</Title>
+      <TitleWrapper>
+        <Title>Select Favorite List Maker</Title>
+        <SwitchLabel>
+          <Switch
+            checked={true}
+            onChange={() => {
+              console.log('aaa');
+            }}
+            onColor="#00b428"
+            boxShadow="0px 1px 5px rgba(0, 0, 0, 0.6)"
+            height={16}
+            width={28}
+            handleDiameter={18}
+            checkedIcon={false}
+            uncheckedIcon={false}
+          />
+          <Spacer width={6} />
+          <span>Indent Coloring</span>
+        </SwitchLabel>
+      </TitleWrapper>
       <IndentContainer>
         {indentOptions.map((indentOption) => {
           const spaceNum = +indentOption.label.replace(/[^0-9]/g, '') - 1;
@@ -102,7 +122,6 @@ export const Console: React.FC<Props> = () => {
           );
         })}
       </IndentContainer>
-
       <DemonstrationContainer>
         <Demonstration>
           <Title>Demonstration</Title>
@@ -134,10 +153,25 @@ const MainContainer = styled.div`
   padding-bottom: 8px;
 `;
 
+const Spacer = styled.div<{ width: number }>`
+  width: ${(props) => props.width}px;
+`;
+
+const TitleWrapper = styled.div`
+  display: flex;
+  align-items: center;
+`;
+
 const Title = styled.div`
   font-size: 16px;
   text-align: left;
   margin: 12px 10px;
+`;
+
+const SwitchLabel = styled.label`
+  margin-left: 8px;
+  display: flex;
+  align-items: center;
 `;
 
 const Label = styled.div`
