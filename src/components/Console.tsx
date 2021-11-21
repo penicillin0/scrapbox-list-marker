@@ -26,6 +26,7 @@ export const Console: React.FC<Props> = () => {
       label: string;
     }[]
   >(initialState);
+  const [indentColoring, setIndentColoring] = useState<boolean>(false);
 
   useEffect(() => {
     chrome.storage.local.get('scrapboxIndentOption', (result) => {
@@ -38,7 +39,33 @@ export const Console: React.FC<Props> = () => {
         setIndentOptions(scrapboxIndentOption);
       }
     });
+
+    chrome.storage.local.get('scrapboxIndentColoring', (result) => {
+      const scrapboxIndentColoring = result.scrapboxIndentColoring;
+
+      if (!scrapboxIndentColoring) {
+        chrome.storage.local.set({ scrapboxIndentColoring: false });
+        setIndentColoring(false);
+      } else {
+        setIndentColoring(scrapboxIndentColoring);
+      }
+    });
   }, []);
+
+  const handleIndentColoringChange = (checked: boolean) => {
+    chrome.storage.local.set({ scrapboxIndentColoring: checked });
+    setIndentColoring(checked);
+
+    chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
+      tabs.forEach((tab) => {
+        if (tab.url === undefined || tab.id === undefined) return;
+        const url = new URL(tab.url);
+        if (url.hostname === 'scrapbox.io') {
+          chrome.tabs.sendMessage(tab.id, 'scrapbox_indent_coloring');
+        }
+      });
+    });
+  };
 
   const handleOnChange = (
     newValue: SingleValue<{
@@ -68,7 +95,6 @@ export const Console: React.FC<Props> = () => {
     chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
       tabs.forEach((tab) => {
         if (tab.url === undefined || tab.id === undefined) return;
-
         const url = new URL(tab.url);
         if (url.hostname === 'scrapbox.io') {
           chrome.tabs.sendMessage(tab.id, 'scrapbox_list_maker');
@@ -83,14 +109,12 @@ export const Console: React.FC<Props> = () => {
         <Title>Select Favorite List Maker</Title>
         <SwitchLabel>
           <Switch
-            checked={true}
-            onChange={() => {
-              console.log('aaa');
-            }}
+            checked={indentColoring}
+            onChange={handleIndentColoringChange}
             onColor="#00b428"
             boxShadow="0px 1px 5px rgba(0, 0, 0, 0.6)"
             height={16}
-            width={28}
+            width={30}
             handleDiameter={18}
             checkedIcon={false}
             uncheckedIcon={false}
