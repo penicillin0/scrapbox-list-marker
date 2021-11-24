@@ -120,7 +120,7 @@ export const Console: React.FC<Props> = () => {
             uncheckedIcon={false}
           />
           <Spacer width={6} />
-          <span>Indent Coloring</span>
+          <span>Indent Visible Line</span>
         </SwitchLabel>
       </TitleWrapper>
       <IndentContainer>
