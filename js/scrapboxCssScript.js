@@ -65,19 +65,15 @@ const insertIndentCSSRule = (scrapboxIndentOptions) => {
 };
 
 const indentColorCSS = [
-  `.indent-mark .char-index{
-      --scrapbox-indent-maker-opacity: 0.2;
-      --scrapbox-indent-maker-yellow:     rgba(255,255,64, var(--scrapbox-indent-maker-opacity)); 
-      --scrapbox-indent-maker-green:  rgba(127,255,127, var(--scrapbox-indent-maker-opacity));
-      --scrapbox-indent-maker-red:  rgba(255,127,255, var(--scrapbox-indent-maker-opacity));
-      --scrapbox-indent-maker-blue:   rgba(79,236,236, var(--scrapbox-indent-maker-opacity));
-  }`,
-  `.app:not(.presentation) .indent-mark .char-index:nth-child(4n+1) { background-color: var(--scrapbox-indent-maker-yellow) }`,
-  `.app:not(.presentation) .indent-mark .char-index:nth-child(4n+2) { background-color: var(--scrapbox-indent-maker-green) }`,
-  `.app:not(.presentation) .indent-mark .char-index:nth-child(4n+3) { background-color: var(--scrapbox-indent-maker-red) }`,
-  `.app:not(.presentation) .indent-mark .char-index:nth-child(4n) { background-color: var(--scrapbox-indent-maker-blue) }`,
-  `.app:not(.presentation) .indent-mark .char-index:nth-last-child(2) { background-color: transparent !important; }`,
-  `.app:not(.presentation) .indent-mark .char-index:nth-last-child(1) { background-color: transparent !important; }`,
+  `.app:not(.presentation) .indent-mark .char-index:not(:nth-last-child(1)):not(:nth-last-child(2)) { position: relative; }`,
+  `.app:not(.presentation) .indent-mark .char-index:not(:nth-last-child(1)):not(:nth-last-child(2))::before {
+      content: " ";
+      position: absolute;
+      left: 47%;
+      top: -24%;
+      border-left: 0.2rem solid #dcdcdc;
+    }`,
+  `.app:not(.presentation) .indent-mark .char-index:not(:nth-last-child(1)):not(:nth-last-child(2)):nth-child(n) { background-color: #f5f5f5 }`,
 ];
 
 const insertIndentColorCSSRule = (isColoring) => {
@@ -92,7 +88,7 @@ const insertIndentColorCSSRule = (isColoring) => {
 
     if (
       cssSelector.match(
-        /^\.app:not\(.presentation\) \.indent-mark \.char-index:nth-child.*/
+        /^\.app:not\(\.presentation\) .indent-mark .char-index:not\(:nth-last-child\(1\)\):not\(:nth-last-child\(2\)\)*/
       )
     ) {
       document.styleSheets[0].deleteRule(i);
