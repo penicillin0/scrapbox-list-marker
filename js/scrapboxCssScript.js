@@ -69,7 +69,7 @@ const indentColorCSS = [
   `.app:not(.presentation) .indent-mark .char-index:not(:nth-last-child(1)):not(:nth-last-child(2))::before {
       content: " ";
       position: absolute;
-      left: 47%;
+      left: 44%;
       top: -24%;
       border-left: 0.2rem solid #dcdcdc;
     }`,
