@@ -27,12 +27,12 @@ export const Header: React.FC<Props> = () => {
 const githubIconConfig = {
   color: '#444',
   size: '22px',
-  style: { paddingLeft: '52px' },
+  style: { paddingLeft: '36px' },
 };
 
 const Main = styled.div`
   padding: 7px;
-  height: 54px;
+  height: 50px;
   display: flex;
   align-items: center;
   justify-content: left;
@@ -48,7 +48,7 @@ const Image = styled.img`
 `;
 
 const Title = styled.p`
-  font-size: 20px;
+  font-size: 21px;
   color: #fff;
   font-weight: bold;
   font-family: 'Noto Serif JP', 游ゴシック体, 'Yu Gothic', YuGothic,
