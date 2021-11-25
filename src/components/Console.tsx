@@ -120,7 +120,7 @@ export const Console: React.FC<Props> = () => {
             uncheckedIcon={false}
           />
           <Spacer width={6} />
-          <span>Indent Visible Line</span>
+          <span>Indent Visible</span>
         </SwitchLabel>
       </TitleWrapper>
       <IndentContainer>
@@ -197,7 +197,7 @@ const TitleWrapper = styled.div`
 const Title = styled.div`
   font-size: 16px;
   text-align: left;
-  margin: 10px 10px;
+  margin: 10px 12px;
 `;
 
 const SwitchLabel = styled.label`
@@ -225,7 +225,7 @@ const VerticalLine = styled.div`
 `;
 
 const Indent = styled.div<{ isGey: boolean }>`
-  width: 20px;
+  width: 24px;
   height: 15px;
   background-color: ${(props) => (props.isGey ? '#f5f5f5' : '#fff')};
 `;
@@ -248,15 +248,15 @@ const IndentRow = styled.div<{ spaceNum: number }>`
 `;
 
 const IndentContent = styled.div`
-  margin-left: 5px;
-  margin-top: 4px;
-  margin-bottom: 4px;
+  margin-left: 6px;
+  margin-top: 1.8px;
+  margin-bottom: 1.8px;
   display: flex;
   align-items: center;
 `;
 
 const DemonstrationContainer = styled.div`
-  margin: 14px;
+  margin: 12px 14px;
   padding: 6px 0px;
   background-color: #fefefe;
   border-radius: 2%;
@@ -264,7 +264,7 @@ const DemonstrationContainer = styled.div`
 `;
 
 const Demonstration = styled.div`
-  padding: 0px 10px;
+  padding: 0px 12px;
   border-left: 5px solid #808b8c;
   box-sizing: border-box;
 `;
