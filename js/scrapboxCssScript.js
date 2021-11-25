@@ -70,10 +70,16 @@ const indentColorCSS = [
       content: " ";
       position: absolute;
       left: 44%;
-      top: -24%;
-      border-left: 0.2rem solid #dcdcdc;
+      border-left: 2px solid #dcdcdc;
+      z-index: 999;
     }`,
-  `.app:not(.presentation) .indent-mark .char-index:not(:nth-last-child(1)):not(:nth-last-child(2)):nth-child(n) { background-color: #f5f5f5 }`,
+  `.app:not(.presentation) .indent-mark .char-index:not(:nth-last-child(1)):not(:nth-last-child(2))::after {
+      background-color: #f5f5f5;
+      content: " ";
+      width: 24px;
+      left: 0;
+      position: absolute;
+    }`,
 ];
 
 const insertIndentColorCSSRule = (isColoring) => {
