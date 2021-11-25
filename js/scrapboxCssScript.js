@@ -64,19 +64,69 @@ const insertIndentCSSRule = (scrapboxIndentOptions) => {
   });
 };
 
-const storageAttachment = () => {
+const indentColorCSS = [
+  `.app:not(.presentation) .indent-mark .char-index:not(:nth-last-child(1)):not(:nth-last-child(2)) { position: relative; }`,
+  `.app:not(.presentation) .indent-mark .char-index:not(:nth-last-child(1)):not(:nth-last-child(2))::before {
+      content: " ";
+      position: absolute;
+      left: 44%;
+      top: -24%;
+      border-left: 0.2rem solid #dcdcdc;
+    }`,
+  `.app:not(.presentation) .indent-mark .char-index:not(:nth-last-child(1)):not(:nth-last-child(2)):nth-child(n) { background-color: #f5f5f5 }`,
+];
+
+const insertIndentColorCSSRule = (isColoring) => {
+  // delete existing rules
+  const cssRules = document.styleSheets[0].cssRules;
+  const cssRulesNum = cssRules.length;
+  for (let i = cssRulesNum - 1; i >= 0; i--) {
+    const cssRule = cssRules[i];
+    const cssSelector = cssRule.selectorText;
+
+    if (cssSelector === undefined) continue;
+
+    if (
+      cssSelector.match(
+        /^\.app:not\(\.presentation\) .indent-mark .char-index:not\(:nth-last-child\(1\)\):not\(:nth-last-child\(2\)\)*/
+      )
+    ) {
+      document.styleSheets[0].deleteRule(i);
+    }
+  }
+
+  // insert new rules
+  if (isColoring) {
+    indentColorCSS.map((css) => {
+      document.styleSheets[0].insertRule(css);
+    });
+  }
+};
+
+const makerAttachment = () => {
   chrome.storage.local.get('scrapboxIndentOption', (result) => {
     const scrapboxIndentOptions = result.scrapboxIndentOption;
     insertIndentCSSRule(scrapboxIndentOptions);
   });
 };
 
+const coloringAttachment = () => {
+  chrome.storage.local.get('scrapboxIndentColoring', (result) => {
+    const isColoring = result.scrapboxIndentColoring;
+    insertIndentColorCSSRule(isColoring);
+  });
+};
+
 // update
 chrome.runtime.onMessage.addListener((request) => {
   if (request === 'scrapbox_list_maker') {
-    storageAttachment();
+    makerAttachment();
+  }
+  if (request === 'scrapbox_indent_coloring') {
+    coloringAttachment();
   }
 });
 
 // initialize
-storageAttachment();
+makerAttachment();
+coloringAttachment();

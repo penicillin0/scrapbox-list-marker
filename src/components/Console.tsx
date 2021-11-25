@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import Select, { ActionMeta, SingleValue } from 'react-select';
+import Switch from 'react-switch';
 import styled from 'styled-components';
 
 const options = [
@@ -25,6 +26,7 @@ export const Console: React.FC<Props> = () => {
       label: string;
     }[]
   >(initialState);
+  const [indentColoring, setIndentColoring] = useState<boolean>(false);
 
   useEffect(() => {
     chrome.storage.local.get('scrapboxIndentOption', (result) => {
@@ -37,7 +39,33 @@ export const Console: React.FC<Props> = () => {
         setIndentOptions(scrapboxIndentOption);
       }
     });
+
+    chrome.storage.local.get('scrapboxIndentColoring', (result) => {
+      const scrapboxIndentColoring = result.scrapboxIndentColoring;
+
+      if (!scrapboxIndentColoring) {
+        chrome.storage.local.set({ scrapboxIndentColoring: false });
+        setIndentColoring(false);
+      } else {
+        setIndentColoring(scrapboxIndentColoring);
+      }
+    });
   }, []);
+
+  const handleIndentColoringChange = (checked: boolean) => {
+    chrome.storage.local.set({ scrapboxIndentColoring: checked });
+    setIndentColoring(checked);
+
+    chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
+      tabs.forEach((tab) => {
+        if (tab.url === undefined || tab.id === undefined) return;
+        const url = new URL(tab.url);
+        if (url.hostname === 'scrapbox.io') {
+          chrome.tabs.sendMessage(tab.id, 'scrapbox_indent_coloring');
+        }
+      });
+    });
+  };
 
   const handleOnChange = (
     newValue: SingleValue<{
@@ -67,7 +95,6 @@ export const Console: React.FC<Props> = () => {
     chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
       tabs.forEach((tab) => {
         if (tab.url === undefined || tab.id === undefined) return;
-
         const url = new URL(tab.url);
         if (url.hostname === 'scrapbox.io') {
           chrome.tabs.sendMessage(tab.id, 'scrapbox_list_maker');
@@ -78,7 +105,24 @@ export const Console: React.FC<Props> = () => {
 
   return (
     <MainContainer>
-      <Title>Select Favorite List Maker</Title>
+      <TitleWrapper>
+        <Title>Select Favorite List Maker</Title>
+        <SwitchLabel>
+          <Switch
+            checked={indentColoring}
+            onChange={handleIndentColoringChange}
+            onColor="#00b428"
+            boxShadow="0px 1px 5px rgba(0, 0, 0, 0.6)"
+            height={16}
+            width={30}
+            handleDiameter={18}
+            checkedIcon={false}
+            uncheckedIcon={false}
+          />
+          <Spacer width={6} />
+          <span>Indent Visible Line</span>
+        </SwitchLabel>
+      </TitleWrapper>
       <IndentContainer>
         {indentOptions.map((indentOption) => {
           const spaceNum = +indentOption.label.replace(/[^0-9]/g, '') - 1;
@@ -102,7 +146,6 @@ export const Console: React.FC<Props> = () => {
           );
         })}
       </IndentContainer>
-
       <DemonstrationContainer>
         <Demonstration>
           <Title>Demonstration</Title>
@@ -134,10 +177,25 @@ const MainContainer = styled.div`
   padding-bottom: 8px;
 `;
 
+const Spacer = styled.div<{ width: number }>`
+  width: ${(props) => props.width}px;
+`;
+
+const TitleWrapper = styled.div`
+  display: flex;
+  align-items: center;
+`;
+
 const Title = styled.div`
   font-size: 16px;
   text-align: left;
   margin: 12px 10px;
+`;
+
+const SwitchLabel = styled.label`
+  margin-left: 8px;
+  display: flex;
+  align-items: center;
 `;
 
 const Label = styled.div`
