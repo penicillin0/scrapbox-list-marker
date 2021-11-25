@@ -100,7 +100,7 @@ const IndentValue = styled.span`
   font-size: 10px;
   transform: scale(0.75);
   font-weight: bold;
-  color: rgba(0, 0, 0, 0.65);
+  color: rgba(0, 0, 0, 0.8);
 `;
 
 const IndentOption = styled.span`
