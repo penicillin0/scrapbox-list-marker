@@ -152,15 +152,23 @@ export const Console: React.FC<Props> = () => {
           <IndentContainer>
             {indentOptions.map((indentOption) => {
               const spaceNum = +indentOption.label.replace(/[^0-9]/g, '') - 1;
-              return [...Array(spaceNum + 1)].map(() => {
+              return [...Array(spaceNum + 1)].map((i) => {
                 return (
-                  <>
-                    <IndentRow spaceNum={spaceNum * 0.8}>
+                  <Row key={i}>
+                    {[...Array(spaceNum)].map((j) => {
+                      return (
+                        <VerticalLineIndentContainer key={j}>
+                          {indentColoring && <VerticalLine />}
+                          <Indent isGey={indentColoring} />
+                        </VerticalLineIndentContainer>
+                      );
+                    })}
+                    <IndentContent>
                       {indentOption.value}
                       &nbsp;&nbsp;&nbsp;
                       {indentOption.label}
-                    </IndentRow>
-                  </>
+                    </IndentContent>
+                  </Row>
                 );
               });
             })}
@@ -189,7 +197,7 @@ const TitleWrapper = styled.div`
 const Title = styled.div`
   font-size: 16px;
   text-align: left;
-  margin: 12px 10px;
+  margin: 10px 10px;
 `;
 
 const SwitchLabel = styled.label`
@@ -203,14 +211,46 @@ const Label = styled.div`
   margin-left: 12px;
 `;
 
+const VerticalLineIndentContainer = styled.div`
+  position: relative;
+`;
+
+const VerticalLine = styled.div`
+  width: 0.2px;
+  height: 27px;
+  position: absolute;
+  top: -40%;
+  left: 52%;
+  background-color: #dcdcdc;
+`;
+
+const Indent = styled.div<{ isGey: boolean }>`
+  width: 20px;
+  height: 15px;
+  background-color: ${(props) => (props.isGey ? '#f5f5f5' : '#fff')};
+`;
+
+const Row = styled.div`
+  display: flex;
+  align-items: center;
+`;
+
 const IndentContainer = styled.div`
   margin: 0px 10px;
 `;
 
 const IndentRow = styled.div<{ spaceNum: number }>`
   margin-left: ${(props) => `${props.spaceNum * 30}px`};
-  margin-top: 6px;
-  margin-bottom: 6px;
+  margin-top: 4px;
+  margin-bottom: 4px;
+  display: flex;
+  align-items: center;
+`;
+
+const IndentContent = styled.div`
+  margin-left: 5px;
+  margin-top: 4px;
+  margin-bottom: 4px;
   display: flex;
   align-items: center;
 `;
