@@ -2,6 +2,8 @@ import React, { useEffect, useState } from 'react';
 import Select, { ActionMeta, SingleValue } from 'react-select';
 import Switch from 'react-switch';
 import styled from 'styled-components';
+import { IndentOptionsType } from '../utils/types';
+import { Demonstration } from './Demonstration';
 
 const options = [
   { value: '●', label: '●' },
@@ -10,7 +12,7 @@ const options = [
   { value: '□', label: '□' },
 ];
 
-const initialState = [
+const initialState: IndentOptionsType = [
   { value: '●', label: 'indent-1' },
   { value: '●', label: 'indent-2' },
   { value: '●', label: 'indent-3' },
@@ -20,12 +22,8 @@ const initialState = [
 type Props = Record<string, never>;
 
 export const Console: React.FC<Props> = () => {
-  const [indentOptions, setIndentOptions] = useState<
-    {
-      value: string;
-      label: string;
-    }[]
-  >(initialState);
+  const [indentOptions, setIndentOptions] =
+    useState<IndentOptionsType>(initialState);
   const [indentColoring, setIndentColoring] = useState<boolean>(false);
 
   useEffect(() => {
@@ -146,35 +144,7 @@ export const Console: React.FC<Props> = () => {
           );
         })}
       </IndentContainer>
-      <DemonstrationContainer>
-        <Demonstration>
-          <Title>Demonstration</Title>
-          <IndentContainer>
-            {indentOptions.map((indentOption) => {
-              const spaceNum = +indentOption.label.replace(/[^0-9]/g, '') - 1;
-              return [...Array(spaceNum + 1)].map((i) => {
-                return (
-                  <Row key={i}>
-                    {[...Array(spaceNum)].map((j) => {
-                      return (
-                        <VerticalLineIndentContainer key={j}>
-                          {indentColoring && <VerticalLine />}
-                          <Indent isGey={indentColoring} />
-                        </VerticalLineIndentContainer>
-                      );
-                    })}
-                    <IndentContent>
-                      {indentOption.value}
-                      &nbsp;&nbsp;&nbsp;
-                      {indentOption.label}
-                    </IndentContent>
-                  </Row>
-                );
-              });
-            })}
-          </IndentContainer>
-        </Demonstration>
-      </DemonstrationContainer>
+      <Demonstration isGrey={indentColoring} indentOptions={indentOptions} />
     </MainContainer>
   );
 };
@@ -211,30 +181,6 @@ const Label = styled.div`
   margin-left: 12px;
 `;
 
-const VerticalLineIndentContainer = styled.div`
-  position: relative;
-`;
-
-const VerticalLine = styled.div`
-  width: 0.2px;
-  height: 27px;
-  position: absolute;
-  top: -40%;
-  left: 52%;
-  background-color: #dcdcdc;
-`;
-
-const Indent = styled.div<{ isGey: boolean }>`
-  width: 24px;
-  height: 15px;
-  background-color: ${(props) => (props.isGey ? '#f5f5f5' : '#fff')};
-`;
-
-const Row = styled.div`
-  display: flex;
-  align-items: center;
-`;
-
 const IndentContainer = styled.div`
   margin: 0px 10px;
 `;
@@ -245,26 +191,4 @@ const IndentRow = styled.div<{ spaceNum: number }>`
   margin-bottom: 4px;
   display: flex;
   align-items: center;
-`;
-
-const IndentContent = styled.div`
-  margin-left: 6px;
-  margin-top: 1.8px;
-  margin-bottom: 1.8px;
-  display: flex;
-  align-items: center;
-`;
-
-const DemonstrationContainer = styled.div`
-  margin: 12px 14px;
-  padding: 6px 0px;
-  background-color: #fefefe;
-  border-radius: 2%;
-  box-shadow: 0px 5px 5px -3px #9e9e9e;
-`;
-
-const Demonstration = styled.div`
-  padding: 0px 12px;
-  border-left: 5px solid #808b8c;
-  box-sizing: border-box;
 `;
