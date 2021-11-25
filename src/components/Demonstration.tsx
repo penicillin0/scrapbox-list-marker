@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import { IndentOptionsType } from '../utils/types';
 
 type Props = {
-  isGrey: boolean;
+  hasLine: boolean;
   indentOptions: IndentOptionsType;
 };
 
@@ -21,8 +21,8 @@ export const Demonstration: React.FC<Props> = (props) => {
                   {[...Array(spaceNum)].map((j) => {
                     return (
                       <VerticalLineIndentContainer key={j}>
-                        {props.isGrey && <VerticalLine />}
-                        <Indent isGrey={props.isGrey} />
+                        {props.hasLine && <VerticalLine />}
+                        <Indent hasLine={props.hasLine} />
                       </VerticalLineIndentContainer>
                     );
                   })}
@@ -75,18 +75,17 @@ const VerticalLineIndentContainer = styled.div`
 `;
 
 const VerticalLine = styled.div`
-  width: 0.2px;
-  height: 27px;
+  width: 1px;
+  height: 23px;
   position: absolute;
-  top: -40%;
-  left: 50%;
+  top: 0;
+  left: 45%;
   background-color: #dcdcdc;
 `;
 
-const Indent = styled.div<{ isGrey: boolean }>`
+const Indent = styled.div<{ hasLine: boolean }>`
   width: 24px;
-  height: 15px;
-  background-color: ${(props) => (props.isGrey ? '#f5f5f5' : '#fff')};
+  height: 23px;
 `;
 
 const IndentContent = styled.div`
@@ -99,7 +98,9 @@ const IndentContent = styled.div`
 
 const IndentValue = styled.span`
   font-size: 10px;
-  transform: scale(0.8);
+  transform: scale(0.75);
+  font-weight: bold;
+  color: rgba(0, 0, 0, 0.65);
 `;
 
 const IndentOption = styled.span`

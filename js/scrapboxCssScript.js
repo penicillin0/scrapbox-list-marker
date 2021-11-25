@@ -64,25 +64,18 @@ const insertIndentCSSRule = (scrapboxIndentOptions) => {
   });
 };
 
-const indentColorCSS = [
+const indentLineCSS = [
   `.app:not(.presentation) .indent-mark .char-index:not(:nth-last-child(1)):not(:nth-last-child(2)) { position: relative; }`,
   `.app:not(.presentation) .indent-mark .char-index:not(:nth-last-child(1)):not(:nth-last-child(2))::before {
       content: " ";
       position: absolute;
-      left: 44%;
+      left: 43%;
+      margin: -4px 0;
       border-left: 2px solid #dcdcdc;
-      z-index: 999;
-    }`,
-  `.app:not(.presentation) .indent-mark .char-index:not(:nth-last-child(1)):not(:nth-last-child(2))::after {
-      background-color: #f5f5f5;
-      content: " ";
-      width: 24px;
-      left: 0;
-      position: absolute;
     }`,
 ];
 
-const insertIndentColorCSSRule = (isColoring) => {
+const insertIndentLineCSSRule = (isLining) => {
   // delete existing rules
   const cssRules = document.styleSheets[0].cssRules;
   const cssRulesNum = cssRules.length;
@@ -102,8 +95,8 @@ const insertIndentColorCSSRule = (isColoring) => {
   }
 
   // insert new rules
-  if (isColoring) {
-    indentColorCSS.map((css) => {
+  if (isLining) {
+    indentLineCSS.map((css) => {
       document.styleSheets[0].insertRule(css);
     });
   }
@@ -116,10 +109,10 @@ const makerAttachment = () => {
   });
 };
 
-const coloringAttachment = () => {
-  chrome.storage.local.get('scrapboxIndentColoring', (result) => {
-    const isColoring = result.scrapboxIndentColoring;
-    insertIndentColorCSSRule(isColoring);
+const liningAttachment = () => {
+  chrome.storage.local.get('scrapboxIndentLining', (result) => {
+    const isLining = result.scrapboxIndentLining;
+    insertIndentLineCSSRule(isLining);
   });
 };
 
@@ -128,11 +121,11 @@ chrome.runtime.onMessage.addListener((request) => {
   if (request === 'scrapbox_list_maker') {
     makerAttachment();
   }
-  if (request === 'scrapbox_indent_coloring') {
-    coloringAttachment();
+  if (request === 'scrapbox_indent_lining') {
+    liningAttachment();
   }
 });
 
 // initialize
 makerAttachment();
-coloringAttachment();
+liningAttachment();

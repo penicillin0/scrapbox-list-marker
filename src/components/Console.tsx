@@ -24,7 +24,7 @@ type Props = Record<string, never>;
 export const Console: React.FC<Props> = () => {
   const [indentOptions, setIndentOptions] =
     useState<IndentOptionsType>(initialState);
-  const [indentColoring, setIndentColoring] = useState<boolean>(false);
+  const [indentLining, setIndentLining] = useState<boolean>(false);
 
   useEffect(() => {
     chrome.storage.local.get('scrapboxIndentOption', (result) => {
@@ -38,28 +38,28 @@ export const Console: React.FC<Props> = () => {
       }
     });
 
-    chrome.storage.local.get('scrapboxIndentColoring', (result) => {
-      const scrapboxIndentColoring = result.scrapboxIndentColoring;
+    chrome.storage.local.get('scrapboxIndentLining', (result) => {
+      const scrapboxIndentLining = result.scrapboxIndentLining;
 
-      if (!scrapboxIndentColoring) {
-        chrome.storage.local.set({ scrapboxIndentColoring: false });
-        setIndentColoring(false);
+      if (!scrapboxIndentLining) {
+        chrome.storage.local.set({ scrapboxIndentLining: false });
+        setIndentLining(false);
       } else {
-        setIndentColoring(scrapboxIndentColoring);
+        setIndentLining(scrapboxIndentLining);
       }
     });
   }, []);
 
-  const handleIndentColoringChange = (checked: boolean) => {
-    chrome.storage.local.set({ scrapboxIndentColoring: checked });
-    setIndentColoring(checked);
+  const handleIndentLiningChange = (checked: boolean) => {
+    chrome.storage.local.set({ scrapboxIndentLining: checked });
+    setIndentLining(checked);
 
     chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
       tabs.forEach((tab) => {
         if (tab.url === undefined || tab.id === undefined) return;
         const url = new URL(tab.url);
         if (url.hostname === 'scrapbox.io') {
-          chrome.tabs.sendMessage(tab.id, 'scrapbox_indent_coloring');
+          chrome.tabs.sendMessage(tab.id, 'scrapbox_indent_lining');
         }
       });
     });
@@ -107,8 +107,8 @@ export const Console: React.FC<Props> = () => {
         <Title>Select Favorite List Maker</Title>
         <SwitchLabel>
           <Switch
-            checked={indentColoring}
-            onChange={handleIndentColoringChange}
+            checked={indentLining}
+            onChange={handleIndentLiningChange}
             onColor="#00b428"
             boxShadow="0px 1px 5px rgba(0, 0, 0, 0.6)"
             height={16}
@@ -144,7 +144,7 @@ export const Console: React.FC<Props> = () => {
           );
         })}
       </IndentContainer>
-      <Demonstration isGrey={indentColoring} indentOptions={indentOptions} />
+      <Demonstration hasLine={indentLining} indentOptions={indentOptions} />
     </MainContainer>
   );
 };
