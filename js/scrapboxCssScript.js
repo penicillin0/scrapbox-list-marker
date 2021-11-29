@@ -6,7 +6,7 @@ const indentCSSRule = new Map([
     {
       before: ' .c-',
       after:
-        ' + .dot {height: .4em !important;width: .4em !important;border-color: black !important;border: solid .1em rgba(0,0,0,0.65) !important;background-color: rgba(0,0,0,0.65) !important;}',
+        ' + .dot {height: .4em !important;width: .4em !important;border-color: rgba(0,0,0,0.65) !important;border: solid .1em rgba(0,0,0,0.65) !important;background-color: rgba(0,0,0,0.65) !important;}',
     },
   ],
   [
