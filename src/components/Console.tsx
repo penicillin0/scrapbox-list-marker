@@ -1,4 +1,6 @@
 import React, { useEffect, useState } from 'react';
+import { IconContext } from 'react-icons';
+import { MdOutlineColorLens } from 'react-icons/md';
 import Select, { ActionMeta, SingleValue } from 'react-select';
 import Switch from 'react-switch';
 import styled from 'styled-components';
@@ -104,7 +106,7 @@ export const Console: React.FC<Props> = () => {
   return (
     <MainContainer>
       <TitleWrapper>
-        <Title>Select Favorite List Maker</Title>
+        <Title>Select Favorite Maker</Title>
         <SwitchLabel>
           <Switch
             checked={indentLining}
@@ -120,6 +122,11 @@ export const Console: React.FC<Props> = () => {
           <Spacer width={6} />
           <span>Indent Visible</span>
         </SwitchLabel>
+        <IconContext.Provider
+          value={{ size: '20px', style: { padding: '2px' } }}
+        >
+          <ColorLens />
+        </IconContext.Provider>
       </TitleWrapper>
       <IndentContainer>
         {indentOptions.map((indentOption) => {
@@ -148,6 +155,14 @@ export const Console: React.FC<Props> = () => {
     </MainContainer>
   );
 };
+
+const ColorLens = styled(MdOutlineColorLens)`
+  color: #00b428;
+  :hover {
+    color: #b4008c;
+    cursor: pointer;
+  }
+`;
 
 const MainContainer = styled.div`
   background-color: #dcdde0;
