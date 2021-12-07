@@ -5,6 +5,7 @@ import { IndentOptionsType } from '../utils/types';
 type Props = {
   hasLine: boolean;
   indentOptions: IndentOptionsType;
+  indentLiningColor: string;
 };
 
 export const Demonstration: React.FC<Props> = (props) => {
@@ -21,8 +22,12 @@ export const Demonstration: React.FC<Props> = (props) => {
                   {[...Array(spaceNum)].map((j) => {
                     return (
                       <VerticalLineIndentContainer key={j}>
-                        {props.hasLine && <VerticalLine />}
-                        <Indent hasLine={props.hasLine} />
+                        {props.hasLine && (
+                          <VerticalLine
+                            indentLiningColor={props.indentLiningColor}
+                          />
+                        )}
+                        <Indent />
                       </VerticalLineIndentContainer>
                     );
                   })}
@@ -74,16 +79,16 @@ const VerticalLineIndentContainer = styled.div`
   position: relative;
 `;
 
-const VerticalLine = styled.div`
+const VerticalLine = styled.div<{ indentLiningColor: string }>`
   width: 1px;
   height: 23px;
   position: absolute;
   top: 0;
   left: 45%;
-  background-color: #dcdcdc;
+  background-color: ${(props) => props.indentLiningColor};
 `;
 
-const Indent = styled.div<{ hasLine: boolean }>`
+const Indent = styled.div`
   width: 24px;
   height: 23px;
 `;
