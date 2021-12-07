@@ -42,14 +42,14 @@ export const Console: React.FC<Props> = () => {
       }
     });
 
-    chrome.storage.local.get('scrapboxIndentLiningColor', (result) => {
-      const scrapboxIndentLiningColor = result.scrapboxIndentLiningColor;
+    chrome.storage.local.get('scrapboxIndentLineColor', (result) => {
+      const scrapboxIndentLineColor = result.scrapboxIndentLineColor;
 
-      if (!scrapboxIndentLiningColor) {
-        chrome.storage.local.set({ scrapboxIndentLiningColor: '#dcdcdc' });
+      if (!scrapboxIndentLineColor) {
+        chrome.storage.local.set({ scrapboxIndentLineColor: '#dcdcdc' });
         setIndentLiningColor('#dcdcdc');
       } else {
-        setIndentLiningColor(scrapboxIndentLiningColor);
+        setIndentLiningColor(scrapboxIndentLineColor);
       }
     });
   }, []);
