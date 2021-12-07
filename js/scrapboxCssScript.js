@@ -75,7 +75,7 @@ const indentLineCSS = [
     }`,
 ];
 
-const insertIndentLineCSSRule = (isLining) => {
+const insertIndentLineCSSRule = (isLining, indentColor) => {
   // delete existing rules
   const cssRules = document.styleSheets[0].cssRules;
   const cssRulesNum = cssRules.length;
@@ -97,6 +97,10 @@ const insertIndentLineCSSRule = (isLining) => {
   // insert new rules
   if (isLining) {
     indentLineCSS.map((css) => {
+      if (css.includes('#dcdcdc')) {
+        css = css.replace('#dcdcdc', indentColor);
+        console.log(css);
+      }
       document.styleSheets[0].insertRule(css);
     });
   }
@@ -112,7 +116,12 @@ const makerAttachment = () => {
 const liningAttachment = () => {
   chrome.storage.local.get('scrapboxIndentLining', (result) => {
     const isLining = result.scrapboxIndentLining;
-    insertIndentLineCSSRule(isLining);
+
+    chrome.storage.local.get('scrapboxIndentLineColor', (result) => {
+      const scrapboxIndentLineColor =
+        result.scrapboxIndentLineColor || '#dcdcdc';
+      insertIndentLineCSSRule(isLining, scrapboxIndentLineColor);
+    });
   });
 };
 
@@ -122,6 +131,9 @@ chrome.runtime.onMessage.addListener((request) => {
     makerAttachment();
   }
   if (request === 'scrapbox_indent_lining') {
+    liningAttachment();
+  }
+  if (request === 'scrapbox_indent_lining_color') {
     liningAttachment();
   }
 });
