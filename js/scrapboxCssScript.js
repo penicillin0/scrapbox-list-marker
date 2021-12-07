@@ -99,7 +99,6 @@ const insertIndentLineCSSRule = (isLining, indentColor) => {
     indentLineCSS.map((css) => {
       if (css.includes('#dcdcdc')) {
         css = css.replace('#dcdcdc', indentColor);
-        console.log(css);
       }
       document.styleSheets[0].insertRule(css);
     });
