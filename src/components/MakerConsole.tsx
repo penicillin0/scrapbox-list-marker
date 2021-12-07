@@ -1,6 +1,8 @@
 import React from 'react';
+import { ColorResult, TwitterPicker } from 'react-color';
 import { IconContext } from 'react-icons';
 import { MdOutlineColorLens } from 'react-icons/md';
+import OutsideClickHandler from 'react-outside-click-handler';
 import Select, { ActionMeta, SingleValue } from 'react-select';
 import Switch from 'react-switch';
 import styled from 'styled-components';
@@ -18,9 +20,11 @@ type Props = {
   setIndentOptions: React.Dispatch<React.SetStateAction<IndentOptionsType>>;
   indentLining: boolean;
   handleIndentLiningChange: (checked: boolean) => void;
+  setIndentLiningColor: (color: string) => void;
 };
 
 export const MakerConsole: React.FC<Props> = (props) => {
+  const [pickerOpen, setPickerOpen] = React.useState(false);
   const handleOnChange = (
     newValue: SingleValue<{
       value: string;
@@ -57,6 +61,26 @@ export const MakerConsole: React.FC<Props> = (props) => {
     });
   };
 
+  const handlePickerOpen = () => {
+    setPickerOpen(true);
+  };
+
+  const handleColorChange = ({ hex }: ColorResult) => {
+    chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
+      chrome.storage.local.set({ scrapboxIndentLineColor: hex });
+
+      tabs.forEach((tab) => {
+        if (tab.url === undefined || tab.id === undefined) return;
+        const url = new URL(tab.url);
+        if (url.hostname === 'scrapbox.io') {
+          chrome.tabs.sendMessage(tab.id, 'scrapbox_indent_lining_color');
+        }
+      });
+    });
+
+    props.setIndentLiningColor(hex);
+  };
+
   return (
     <>
       <TitleWrapper>
@@ -79,9 +103,23 @@ export const MakerConsole: React.FC<Props> = (props) => {
         <IconContext.Provider
           value={{ size: '20px', style: { padding: '2px' } }}
         >
-          <ColorLens />
+          <ColorLens onClick={handlePickerOpen} />
         </IconContext.Provider>
       </TitleWrapper>
+      {pickerOpen && (
+        <OutsideClickHandler
+          onOutsideClick={() => {
+            setPickerOpen(false);
+          }}
+        >
+          <TwitterPickerWrapper>
+            <TwitterPicker
+              triangle="top-right"
+              onChangeComplete={handleColorChange}
+            />
+          </TwitterPickerWrapper>
+        </OutsideClickHandler>
+      )}
       <IndentContainer>
         {props.indentOptions.map((indentOption) => {
           const spaceNum = +indentOption.label.replace(/[^0-9]/g, '') - 1;
@@ -108,6 +146,13 @@ export const MakerConsole: React.FC<Props> = (props) => {
     </>
   );
 };
+
+const TwitterPickerWrapper = styled.div`
+  position: absolute;
+  top: 114px;
+  right: 10px;
+  z-index: 1;
+`;
 
 const TitleWrapper = styled.div`
   display: flex;

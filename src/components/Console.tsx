@@ -17,6 +17,7 @@ export const Console: React.FC<Props> = () => {
   const [indentOptions, setIndentOptions] =
     useState<IndentOptionsType>(initialState);
   const [indentLining, setIndentLining] = useState<boolean>(false);
+  const [indentLiningColor, setIndentLiningColor] = useState<string>('#dcdcdc');
 
   useEffect(() => {
     chrome.storage.local.get('scrapboxIndentOption', (result) => {
@@ -38,6 +39,17 @@ export const Console: React.FC<Props> = () => {
         setIndentLining(false);
       } else {
         setIndentLining(scrapboxIndentLining);
+      }
+    });
+
+    chrome.storage.local.get('scrapboxIndentLiningColor', (result) => {
+      const scrapboxIndentLiningColor = result.scrapboxIndentLiningColor;
+
+      if (!scrapboxIndentLiningColor) {
+        chrome.storage.local.set({ scrapboxIndentLiningColor: '#dcdcdc' });
+        setIndentLiningColor('#dcdcdc');
+      } else {
+        setIndentLiningColor(scrapboxIndentLiningColor);
       }
     });
   }, []);
@@ -64,8 +76,13 @@ export const Console: React.FC<Props> = () => {
         setIndentOptions={setIndentOptions}
         indentLining={indentLining}
         handleIndentLiningChange={handleIndentLiningChange}
+        setIndentLiningColor={setIndentLiningColor}
       />
-      <Demonstration hasLine={indentLining} indentOptions={indentOptions} />
+      <Demonstration
+        hasLine={indentLining}
+        indentOptions={indentOptions}
+        indentLiningColor={indentLiningColor}
+      />
     </MainContainer>
   );
 };
