@@ -1,3 +1,4 @@
+import Popper from '@mui/material/Popper';
 import React from 'react';
 import { ColorResult, TwitterPicker } from 'react-color';
 import { IconContext } from 'react-icons';
@@ -24,7 +25,13 @@ type Props = {
 };
 
 export const MakerConsole: React.FC<Props> = (props) => {
-  const [pickerOpen, setPickerOpen] = React.useState(false);
+  const [anchorEl, setAnchorEl] = React.useState<null | SVGElement>(null);
+  const [open, setOpen] = React.useState(false);
+  const handleColorIconClick = (event: React.MouseEvent<SVGElement>) => {
+    setAnchorEl(event.currentTarget);
+    setOpen(!open);
+  };
+
   const handleOnChange = (
     newValue: SingleValue<{
       value: string;
@@ -61,10 +68,6 @@ export const MakerConsole: React.FC<Props> = (props) => {
     });
   };
 
-  const handlePickerOpen = () => {
-    setPickerOpen(true);
-  };
-
   const handleColorChange = ({ hex }: ColorResult) => {
     chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
       chrome.storage.local.set({ scrapboxIndentLineColor: hex });
@@ -79,6 +82,10 @@ export const MakerConsole: React.FC<Props> = (props) => {
     });
 
     props.setIndentLiningColor(hex);
+  };
+
+  const handleOnOutsideClick = () => {
+    setOpen(false);
   };
 
   return (
@@ -103,23 +110,31 @@ export const MakerConsole: React.FC<Props> = (props) => {
         <IconContext.Provider
           value={{ size: '20px', style: { padding: '2px' } }}
         >
-          <ColorLens onClick={handlePickerOpen} />
+          <ColorLens onClick={handleColorIconClick} />
         </IconContext.Provider>
       </TitleWrapper>
-      {pickerOpen && (
-        <OutsideClickHandler
-          onOutsideClick={() => {
-            setPickerOpen(false);
-          }}
-        >
-          <TwitterPickerWrapper>
-            <TwitterPicker
-              triangle="top-right"
-              onChangeComplete={handleColorChange}
-            />
-          </TwitterPickerWrapper>
+
+      <Popper
+        open={open}
+        anchorEl={anchorEl}
+        placement="bottom-start"
+        modifiers={[
+          {
+            name: 'offset',
+            options: {
+              offset: [10, 10],
+            },
+          },
+        ]}
+      >
+        <OutsideClickHandler onOutsideClick={handleOnOutsideClick}>
+          <TwitterPicker
+            triangle="top-right"
+            onChangeComplete={handleColorChange}
+          />
         </OutsideClickHandler>
-      )}
+      </Popper>
+
       <IndentContainer>
         {props.indentOptions.map((indentOption) => {
           const spaceNum = +indentOption.label.replace(/[^0-9]/g, '') - 1;
