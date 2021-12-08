@@ -162,13 +162,6 @@ export const MakerConsole: React.FC<Props> = (props) => {
   );
 };
 
-const TwitterPickerWrapper = styled.div`
-  position: absolute;
-  top: 114px;
-  right: 10px;
-  z-index: 1;
-`;
-
 const TitleWrapper = styled.div`
   display: flex;
   align-items: center;
