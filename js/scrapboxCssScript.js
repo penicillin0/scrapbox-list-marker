@@ -129,10 +129,10 @@ chrome.runtime.onMessage.addListener((request) => {
   if (request === 'scrapbox_list_maker') {
     makerAttachment();
   }
-  if (request === 'scrapbox_indent_lining') {
-    liningAttachment();
-  }
-  if (request === 'scrapbox_indent_lining_color') {
+  if (
+    request === 'scrapbox_indent_lining' ||
+    request === 'scrapbox_indent_lining_color'
+  ) {
     liningAttachment();
   }
 });
