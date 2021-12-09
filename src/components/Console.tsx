@@ -1,6 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
-import { getLocalStorage, sendMessageToScrapboxIo } from '../utils/chromeApi';
+import {
+  getLocalStorage,
+  sendMessageToScrapboxIo,
+  setLocalStorage,
+} from '../utils/chromeApi';
 import { IndentOptionsType } from '../utils/types';
 import { Demonstration } from './Demonstration';
 import { MakerConsole } from './MakerConsole';
@@ -26,9 +30,7 @@ export const Console: React.FC<Props> = () => {
         await getLocalStorage<IndentOptionsType | null>('scrapboxIndentOption');
 
       if (!scrapboxIndentOption) {
-        chrome.storage.local.set({
-          scrapboxIndentOption: initialState,
-        });
+        setLocalStorage('scrapboxIndentOption', initialState);
         setIndentOptions(initialState);
       } else {
         setIndentOptions(scrapboxIndentOption);
@@ -39,7 +41,7 @@ export const Console: React.FC<Props> = () => {
       );
 
       if (!scrapboxIndentLining) {
-        chrome.storage.local.set({ scrapboxIndentLining: false });
+        setLocalStorage('scrapboxIndentLining', false);
         setIndentLining(false);
       } else {
         setIndentLining(scrapboxIndentLining);
@@ -50,7 +52,7 @@ export const Console: React.FC<Props> = () => {
       );
 
       if (!scrapboxIndentLineColor) {
-        chrome.storage.local.set({ scrapboxIndentLineColor: '#dcdcdc' });
+        setLocalStorage('scrapboxIndentLineColor', '#dcdcdc');
         setIndentLiningColor('#dcdcdc');
       } else {
         setIndentLiningColor(scrapboxIndentLineColor);
@@ -58,8 +60,8 @@ export const Console: React.FC<Props> = () => {
     })();
   }, []);
 
-  const handleIndentLiningChange = (checked: boolean) => {
-    chrome.storage.local.set({ scrapboxIndentLining: checked });
+  const handleIndentLiningChange = async (checked: boolean) => {
+    await setLocalStorage<boolean>('scrapboxIndentLining', checked);
     setIndentLining(checked);
 
     sendMessageToScrapboxIo('scrapbox_indent_lining');

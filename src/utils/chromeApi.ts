@@ -3,6 +3,11 @@ export const getLocalStorage = <T>(key: string) =>
     chrome.storage.local.get(key, (data) => resolve(data[key]));
   });
 
+export const setLocalStorage = <T>(key: string, value: T) =>
+  new Promise<void>((resolve) => {
+    chrome.storage.local.set({ [key]: value }, () => resolve());
+  });
+
 export const sendMessageToScrapboxIo = (message: string) => {
   chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
     tabs.forEach((tab) => {
