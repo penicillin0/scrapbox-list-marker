@@ -3,11 +3,6 @@ export const getLocalStorage = <T>(key: string) =>
     chrome.storage.local.get(key, (data) => resolve(data[key]));
   });
 
-export const getSyncStorage = <T>(key: string) =>
-  new Promise<T>((resolve) => {
-    chrome.storage.sync.get(key, (data) => resolve(data[key]));
-  });
-
 export const sendMessageToScrapboxIo = (message: string) => {
   chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
     tabs.forEach((tab) => {
