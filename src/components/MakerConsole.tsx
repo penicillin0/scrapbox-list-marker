@@ -7,6 +7,7 @@ import OutsideClickHandler from 'react-outside-click-handler';
 import Select, { ActionMeta, SingleValue } from 'react-select';
 import Switch from 'react-switch';
 import styled from 'styled-components';
+import { sendMessageToScrapboxIo } from '../utils/chromeApi';
 import { IndentOptionsType } from '../utils/types';
 
 const options = [
@@ -57,29 +58,12 @@ export const MakerConsole: React.FC<Props> = (props) => {
 
     chrome.storage.local.set({ scrapboxIndentOption: newIndentOptions });
 
-    chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
-      tabs.forEach((tab) => {
-        if (tab.url === undefined || tab.id === undefined) return;
-        const url = new URL(tab.url);
-        if (url.hostname === 'scrapbox.io') {
-          chrome.tabs.sendMessage(tab.id, 'scrapbox_list_maker');
-        }
-      });
-    });
+    sendMessageToScrapboxIo('scrapbox_list_maker');
   };
 
   const handleColorChange = ({ hex }: ColorResult) => {
-    chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
-      chrome.storage.local.set({ scrapboxIndentLineColor: hex });
-
-      tabs.forEach((tab) => {
-        if (tab.url === undefined || tab.id === undefined) return;
-        const url = new URL(tab.url);
-        if (url.hostname === 'scrapbox.io') {
-          chrome.tabs.sendMessage(tab.id, 'scrapbox_indent_lining_color');
-        }
-      });
-    });
+    chrome.storage.local.set({ scrapboxIndentLineColor: hex });
+    sendMessageToScrapboxIo('scrapbox_indent_lining_color');
 
     props.setIndentLiningColor(hex);
   };

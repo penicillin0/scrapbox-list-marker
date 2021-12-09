@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
+import { getLocalStorage, sendMessageToScrapboxIo } from '../utils/chromeApi';
 import { IndentOptionsType } from '../utils/types';
 import { Demonstration } from './Demonstration';
 import { MakerConsole } from './MakerConsole';
@@ -20,19 +21,22 @@ export const Console: React.FC<Props> = () => {
   const [indentLiningColor, setIndentLiningColor] = useState<string>('#dcdcdc');
 
   useEffect(() => {
-    chrome.storage.local.get('scrapboxIndentOption', (result) => {
-      const scrapboxIndentOption = result.scrapboxIndentOption;
+    (async () => {
+      const scrapboxIndentOption =
+        await getLocalStorage<IndentOptionsType | null>('scrapboxIndentOption');
 
       if (!scrapboxIndentOption) {
-        chrome.storage.local.set({ scrapboxIndentOption: initialState });
+        chrome.storage.local.set({
+          scrapboxIndentOption: initialState,
+        });
         setIndentOptions(initialState);
       } else {
         setIndentOptions(scrapboxIndentOption);
       }
-    });
 
-    chrome.storage.local.get('scrapboxIndentLining', (result) => {
-      const scrapboxIndentLining = result.scrapboxIndentLining;
+      const scrapboxIndentLining = await getLocalStorage<boolean | null>(
+        'scrapboxIndentLining'
+      );
 
       if (!scrapboxIndentLining) {
         chrome.storage.local.set({ scrapboxIndentLining: false });
@@ -40,10 +44,10 @@ export const Console: React.FC<Props> = () => {
       } else {
         setIndentLining(scrapboxIndentLining);
       }
-    });
 
-    chrome.storage.local.get('scrapboxIndentLineColor', (result) => {
-      const scrapboxIndentLineColor = result.scrapboxIndentLineColor;
+      const scrapboxIndentLineColor = await getLocalStorage<string | null>(
+        'scrapboxIndentLineColor'
+      );
 
       if (!scrapboxIndentLineColor) {
         chrome.storage.local.set({ scrapboxIndentLineColor: '#dcdcdc' });
@@ -51,22 +55,14 @@ export const Console: React.FC<Props> = () => {
       } else {
         setIndentLiningColor(scrapboxIndentLineColor);
       }
-    });
+    })();
   }, []);
 
   const handleIndentLiningChange = (checked: boolean) => {
     chrome.storage.local.set({ scrapboxIndentLining: checked });
     setIndentLining(checked);
 
-    chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
-      tabs.forEach((tab) => {
-        if (tab.url === undefined || tab.id === undefined) return;
-        const url = new URL(tab.url);
-        if (url.hostname === 'scrapbox.io') {
-          chrome.tabs.sendMessage(tab.id, 'scrapbox_indent_lining');
-        }
-      });
-    });
+    sendMessageToScrapboxIo('scrapbox_indent_lining');
   };
 
   return (
