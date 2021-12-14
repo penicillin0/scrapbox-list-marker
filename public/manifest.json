@@ -1,7 +1,8 @@
 {
   "name": "Scrapbox List Marker",
-  "description": "Customize the scrapbox list marker.",
+  "description": "__MSG_appDescription__",
   "version": "1.3.0",
+  "default_locale": "en",
   "manifest_version": 3,
 
   "action": {
