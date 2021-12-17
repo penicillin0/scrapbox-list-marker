@@ -12,7 +12,7 @@
   "content_scripts": [
     {
       "matches": ["https://scrapbox.io/*/*"],
-      "js": ["backgroundJs/scrapboxCssScript.js"]
+      "js": ["contentScripts/scrapboxCssScript.js"]
     }
   ],
   "permissions": ["activeTab", "storage"],
