@@ -6,6 +6,7 @@ type Props = {
   hasLine: boolean;
   indentOptions: IndentOptionsType;
   indentLiningColor: string;
+  markerColor: string;
 };
 
 export const Demonstration: React.FC<Props> = (props) => {
@@ -32,7 +33,9 @@ export const Demonstration: React.FC<Props> = (props) => {
                     );
                   })}
                   <IndentContent>
-                    <IndentValue>{indentOption.value}</IndentValue>
+                    <IndentValue markerColor={props.markerColor}>
+                      {indentOption.value}
+                    </IndentValue>
                     &nbsp;&nbsp;&nbsp;
                     <IndentOption>{indentOption.label}</IndentOption>
                   </IndentContent>
@@ -101,11 +104,11 @@ const IndentContent = styled.div`
   align-items: center;
 `;
 
-const IndentValue = styled.span`
+const IndentValue = styled.span<{ markerColor: string }>`
   font-size: 10px;
   transform: scale(0.75);
   font-weight: bold;
-  color: rgba(0, 0, 0, 0.8);
+  color: ${(props) => props.markerColor};
 `;
 
 const IndentOption = styled.span`

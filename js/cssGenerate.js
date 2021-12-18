@@ -1,13 +1,13 @@
-export const getIndentCssRule = (marker, indentNumber) => {
+export const getIndentCssRule = (marker, indentNumber, markerColor) => {
   switch (marker) {
     case '●':
-      return `.c-${indentNumber} + .dot {height: .4em !important;width: .4em !important;border-color: rgba(0,0,0,0.65) !important;border: solid .1em rgba(0,0,0,0.65) !important;background-color: rgba(0,0,0,0.65) !important;}`;
+      return `.c-${indentNumber} + .dot {height: .4em !important;width: .4em !important; border-color: ${markerColor} !important;border: solid .1em ${markerColor} !important; background-color: ${markerColor} !important;}`;
     case '○':
-      return `.c-${indentNumber} + .dot {height: .4em !important;width: .4em !important;border-color: black !important;border: solid .1em rgba(0,0,0,0.65) !important;background-color: rgb(255,255,255) !important;}`;
+      return `.c-${indentNumber} + .dot {height: .4em !important;width: .4em !important; border-color: black !important; border: solid .1em ${markerColor} !important; background-color: rgba(255,255,255, 0.4) !important;}`;
     case '■':
-      return `.c-${indentNumber} + .dot {height: .4em !important;width: .4em !important;border-radius: 25% !important;background-color: rgba(0,0,0,0.65) !important;}`;
+      return `.c-${indentNumber} + .dot {height: .4em !important;width: .4em !important; border-radius: 0% !important; background-color: ${markerColor} !important;}`;
     case '□':
-      return `.c-${indentNumber} + .dot {height: .4em !important; width: .4em !important;border-radius: 25% !important; border: solid .1em rgba(0,0,0,0.65) !important;background-color: rgb(255,255,255) !important; }`;
+      return `.c-${indentNumber} + .dot {height: .4em !important; width: .4em !important; border-radius: 0% !important; border: solid .1em ${markerColor} !important; background-color: rgba(255,255,255, 0.4) !important; }`;
     default:
       break;
   }

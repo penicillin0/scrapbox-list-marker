@@ -17,6 +17,7 @@ type Props = Record<string, never>;
 export const Console: React.FC<Props> = () => {
   const [indentOptions, setIndentOptions] =
     useState<IndentOptionsType>(initialState);
+  const [markerColor, setMarkerColor] = useState<string>('rgba(0,0,0,0.65)');
   const [indentLining, setIndentLining] = useState<boolean>(false);
   const [indentLiningColor, setIndentLiningColor] = useState<string>('#dcdcdc');
 
@@ -53,6 +54,17 @@ export const Console: React.FC<Props> = () => {
       } else {
         setIndentLiningColor(scrapboxIndentLineColor);
       }
+
+      const scrapboxMarkerColor = await getLocalStorage<string | null>(
+        'scrapboxMarkerColor'
+      );
+
+      if (!scrapboxMarkerColor) {
+        setLocalStorage('scrapboxMarkerColor', 'rgba(0,0,0,0.65)');
+        setMarkerColor('rgba(0,0,0,0.65)');
+      } else {
+        setMarkerColor(scrapboxMarkerColor);
+      }
     })();
   }, []);
 
@@ -69,11 +81,13 @@ export const Console: React.FC<Props> = () => {
         indentLining={indentLining}
         handleIndentLiningChange={handleIndentLiningChange}
         setIndentLiningColor={setIndentLiningColor}
+        setMarkerColor={setMarkerColor}
       />
       <Demonstration
         hasLine={indentLining}
         indentOptions={indentOptions}
         indentLiningColor={indentLiningColor}
+        markerColor={markerColor}
       />
     </MainContainer>
   );

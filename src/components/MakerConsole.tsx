@@ -23,6 +23,7 @@ type Props = {
   indentLining: boolean;
   handleIndentLiningChange: (checked: boolean) => void;
   setIndentLiningColor: (color: string) => void;
+  setMarkerColor: (color: string) => void;
 };
 
 export const MakerConsole: React.FC<Props> = (props) => {
@@ -60,9 +61,13 @@ export const MakerConsole: React.FC<Props> = (props) => {
   };
 
   const handleColorChange = async ({ hex }: ColorResult) => {
-    setLocalStorage('scrapboxIndentLineColor', hex);
-
-    props.setIndentLiningColor(hex);
+    if (anchorEl?.id === 'lineColor') {
+      setLocalStorage('scrapboxIndentLineColor', hex);
+      props.setIndentLiningColor(hex);
+    } else if (anchorEl?.id === 'markerColor') {
+      setLocalStorage('scrapboxMarkerColor', hex);
+      props.setMarkerColor(hex);
+    }
   };
 
   const handleOnOutsideClick = () => {
@@ -91,7 +96,7 @@ export const MakerConsole: React.FC<Props> = (props) => {
         <IconContext.Provider
           value={{ size: '20px', style: { padding: '2px' } }}
         >
-          <ColorLens onClick={handleColorIconClick} />
+          <ColorLens onClick={handleColorIconClick} id="LineColor" />
         </IconContext.Provider>
       </TitleWrapper>
 
@@ -117,6 +122,14 @@ export const MakerConsole: React.FC<Props> = (props) => {
       </Popper>
 
       <IndentContainer>
+        <MarkerColorIconContainer>
+          <span>Marker Color</span>
+          <IconContext.Provider
+            value={{ size: '20px', style: { padding: '2px' } }}
+          >
+            <ColorLens onClick={handleColorIconClick} id="markerColor" />
+          </IconContext.Provider>
+        </MarkerColorIconContainer>
         {props.indentOptions.map((indentOption) => {
           const spaceNum = +indentOption.label.replace(/[^0-9]/g, '') - 1;
 
@@ -142,6 +155,14 @@ export const MakerConsole: React.FC<Props> = (props) => {
     </>
   );
 };
+
+const MarkerColorIconContainer = styled.div`
+  display: flex;
+  align-items: center;
+  position: absolute;
+  right: 6px;
+  top: -13px;
+`;
 
 const TitleWrapper = styled.div`
   display: flex;
@@ -170,6 +191,7 @@ const SwitchLabel = styled.label`
 
 const IndentContainer = styled.div`
   margin: 0px 10px;
+  position: relative;
 `;
 
 const Spacer = styled.div<{ width: number }>`
