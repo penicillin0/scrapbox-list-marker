@@ -12,7 +12,7 @@
   "content_scripts": [
     {
       "matches": ["https://scrapbox.io/*/*"],
-      "js": ["contentScripts/scrapboxCssScript.js"]
+      "js": ["contentScripts/contentScript.js"]
     }
   ],
   "permissions": ["activeTab", "storage"],
@@ -20,5 +20,11 @@
     "16": "images/16icon.png",
     "48": "images/48icon.png",
     "128": "images/128icon.png"
-  }
+  },
+  "web_accessible_resources": [
+    {
+      "resources": ["contentScripts/contentScript.js"],
+      "extension_ids": ["ijofdcbphchljfjaennedmlmjjcholig"]
+    }
+  ]
 }
