@@ -1,39 +1,6 @@
 'use strict';
 
-const indentCSSRule = new Map([
-  [
-    '●',
-    {
-      before: ' .c-',
-      after:
-        ' + .dot {height: .4em !important;width: .4em !important;border-color: rgba(0,0,0,0.65) !important;border: solid .1em rgba(0,0,0,0.65) !important;background-color: rgba(0,0,0,0.65) !important;}',
-    },
-  ],
-  [
-    '○',
-    {
-      before: ' .c-',
-      after:
-        ' + .dot {height: .4em !important;width: .4em !important;border-color: black !important;border: solid .1em rgba(0,0,0,0.65) !important;background-color: rgb(255,255,255) !important;}',
-    },
-  ],
-  [
-    '■',
-    {
-      before: ' .c-',
-      after:
-        ' + .dot {height: .4em !important;width: .4em !important;border-radius: 25% !important;background-color: rgba(0,0,0,0.65) !important;}',
-    },
-  ],
-  [
-    '□',
-    {
-      before: ' .c-',
-      after:
-        ' + .dot {height: .4em !important; width: .4em !important;border-radius: 25% !important; border: solid .1em rgba(0,0,0,0.65) !important;background-color: rgb(255,255,255) !important; }',
-    },
-  ],
-]);
+import { getIndentCssRule, indentLineCss } from './cssGenerate.js';
 
 const insertIndentCSSRule = (scrapboxIndentOptions) => {
   // delete existing rules
@@ -56,24 +23,12 @@ const insertIndentCSSRule = (scrapboxIndentOptions) => {
 
     for (let i = 0; i < 20; i++) {
       if (i % 4 === indentNum - 1) {
-        const before = indentCSSRule.get(scrapboxIndentOption.value).before;
-        const after = indentCSSRule.get(scrapboxIndentOption.value).after;
-        document.styleSheets[0].insertRule(before + String(i) + after);
+        const css = getIndentCssRule(scrapboxIndentOption.value, i);
+        document.styleSheets[0].insertRule(css);
       }
     }
   });
 };
-
-const indentLineCSS = [
-  `.app:not(.presentation) .indent-mark .char-index:not(:nth-last-child(1)):not(:nth-last-child(2)) { position: relative; }`,
-  `.app:not(.presentation) .indent-mark .char-index:not(:nth-last-child(1)):not(:nth-last-child(2))::before {
-      content: " ";
-      position: absolute;
-      left: 43%;
-      margin: -4px 0;
-      border-left: 2px solid #dcdcdc;
-    }`,
-];
 
 const insertIndentLineCSSRule = (isLining, indentColor) => {
   // delete existing rules
@@ -96,7 +51,7 @@ const insertIndentLineCSSRule = (isLining, indentColor) => {
 
   // insert new rules
   if (isLining) {
-    indentLineCSS.map((css) => {
+    indentLineCss.map((css) => {
       if (css.includes('#dcdcdc')) {
         css = css.replace('#dcdcdc', indentColor);
       }
