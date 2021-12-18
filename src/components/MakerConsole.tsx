@@ -96,7 +96,7 @@ export const MakerConsole: React.FC<Props> = (props) => {
         <IconContext.Provider
           value={{ size: '20px', style: { padding: '2px' } }}
         >
-          <ColorLens onClick={handleColorIconClick} id="LineColor" />
+          <ColorLens onClick={handleColorIconClick} id="lineColor" />
         </IconContext.Provider>
       </TitleWrapper>
 
