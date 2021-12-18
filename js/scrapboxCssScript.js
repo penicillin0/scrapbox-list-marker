@@ -80,15 +80,23 @@ const liningAttachment = () => {
 };
 
 // update
-chrome.runtime.onMessage.addListener((request) => {
-  if (request === 'scrapbox_list_maker') {
-    makerAttachment();
-  }
-  if (
-    request === 'scrapbox_indent_lining' ||
-    request === 'scrapbox_indent_lining_color'
-  ) {
-    liningAttachment();
+chrome.storage.onChanged.addListener((changes) => {
+  const changedStorageKeys = Object.keys(changes);
+
+  for (const key of changedStorageKeys) {
+    switch (key) {
+      case 'scrapboxIndentOption':
+        makerAttachment();
+        break;
+      case 'scrapboxIndentLining':
+        liningAttachment();
+        break;
+      case 'scrapboxIndentLineColor':
+        liningAttachment();
+        break;
+      default:
+        break;
+    }
   }
 });
 

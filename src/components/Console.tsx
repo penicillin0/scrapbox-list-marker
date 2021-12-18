@@ -1,10 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
-import {
-  getLocalStorage,
-  sendMessageToScrapboxIo,
-  setLocalStorage,
-} from '../utils/chromeApi';
+import { getLocalStorage, setLocalStorage } from '../utils/chromeApi';
 import { IndentOptionsType } from '../utils/types';
 import { Demonstration } from './Demonstration';
 import { MakerConsole } from './MakerConsole';
@@ -63,8 +59,6 @@ export const Console: React.FC<Props> = () => {
   const handleIndentLiningChange = async (checked: boolean) => {
     await setLocalStorage<boolean>('scrapboxIndentLining', checked);
     setIndentLining(checked);
-
-    sendMessageToScrapboxIo('scrapbox_indent_lining');
   };
 
   return (
