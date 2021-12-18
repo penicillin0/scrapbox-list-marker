@@ -7,7 +7,7 @@ import OutsideClickHandler from 'react-outside-click-handler';
 import Select, { ActionMeta, SingleValue } from 'react-select';
 import Switch from 'react-switch';
 import styled from 'styled-components';
-import { sendMessageToScrapboxIo, setLocalStorage } from '../utils/chromeApi';
+import { setLocalStorage } from '../utils/chromeApi';
 import { IndentOptionsType } from '../utils/types';
 
 const options = [
@@ -56,14 +56,11 @@ export const MakerConsole: React.FC<Props> = (props) => {
 
     props.setIndentOptions(newIndentOptions);
 
-    await setLocalStorage('scrapboxIndentOption', newIndentOptions);
-
-    sendMessageToScrapboxIo('scrapbox_list_maker');
+    setLocalStorage('scrapboxIndentOption', newIndentOptions);
   };
 
   const handleColorChange = async ({ hex }: ColorResult) => {
-    await setLocalStorage('scrapboxIndentLineColor', hex);
-    sendMessageToScrapboxIo('scrapbox_indent_lining_color');
+    setLocalStorage('scrapboxIndentLineColor', hex);
 
     props.setIndentLiningColor(hex);
   };
