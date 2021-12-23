@@ -1,3 +1,4 @@
+import Color from 'color';
 import React from 'react';
 import styled from 'styled-components';
 import { IndentOptionsType } from '../utils/types';
@@ -10,9 +11,14 @@ type Props = {
 };
 
 export const Demonstration: React.FC<Props> = (props) => {
+  const markerIsDark = Color(props.markerColor).isDark();
+
   return (
-    <MainContainer>
-      <Main>
+    <MainContainer
+      bgColor={markerIsDark ? '#fefefe' : '#444444'}
+      textColor={markerIsDark ? '#111111' : '#fefefe'}
+    >
+      <Main borderColor={markerIsDark ? '#333333' : '#aaaaaa'}>
         <Title>Demonstration</Title>
         <IndentContainer>
           {props.indentOptions.map((indentOption) => {
@@ -49,17 +55,18 @@ export const Demonstration: React.FC<Props> = (props) => {
   );
 };
 
-const MainContainer = styled.div`
+const MainContainer = styled.div<{ bgColor: string; textColor: string }>`
   margin: 12px 14px;
   padding: 6px 0px;
-  background-color: #fefefe;
   border-radius: 2%;
   box-shadow: 0px 5px 5px -3px #9e9e9e;
+  background-color: ${(props) => props.bgColor};
+  color: ${(props) => props.textColor};
 `;
 
-const Main = styled.div`
+const Main = styled.div<{ borderColor: string }>`
   padding: 0px 12px;
-  border-left: 5px solid #808b8c;
+  border-left: 5px solid ${(props) => props.borderColor};
   box-sizing: border-box;
 `;
 
