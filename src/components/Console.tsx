@@ -1,9 +1,10 @@
+import { Tab, Tabs, Typography } from '@mui/material';
+import { Box } from '@mui/system';
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { getLocalStorage, setLocalStorage } from '../utils/chromeApi';
 import { IndentOptionsType } from '../utils/types';
 import { Demonstration } from './Demonstration';
-import { MakerConsole } from './MakerConsole';
 
 const initialState: IndentOptionsType = [
   { value: '●', label: 'indent-1' },
@@ -14,7 +15,34 @@ const initialState: IndentOptionsType = [
 
 type Props = Record<string, never>;
 
+interface TabPanelProps {
+  children?: React.ReactNode;
+  index: number;
+  value: number;
+}
+
+const TabPanel: React.FC<TabPanelProps> = (props) => {
+  const { children, value, index, ...other } = props;
+
+  return (
+    <div
+      role="tabpanel"
+      hidden={value !== index}
+      id={`simple-tabpanel-${index}`}
+      aria-labelledby={`simple-tab-${index}`}
+      {...other}
+    >
+      {value === index && (
+        <Box sx={{ p: 3 }}>
+          <Typography>{children}</Typography>
+        </Box>
+      )}
+    </div>
+  );
+};
+
 export const Console: React.FC<Props> = () => {
+  const [value, setValue] = useState<number>(0);
   const [indentOptions, setIndentOptions] =
     useState<IndentOptionsType>(initialState);
   const [markerColor, setMarkerColor] = useState<string>('#111111');
@@ -73,16 +101,40 @@ export const Console: React.FC<Props> = () => {
     setIndentLining(checked);
   };
 
+  const handleChange = (event: React.SyntheticEvent, newValue: number) => {
+    setValue(newValue);
+  };
+
   return (
     <MainContainer>
-      <MakerConsole
+      <Tabs
+        value={value}
+        onChange={handleChange}
+        aria-label="basic tabs example"
+        textColor="primary"
+        indicatorColor="secondary"
+      >
+        <Tab label="One" />
+        <Tab label="Two" />
+        <Tab label="Three" />
+      </Tabs>
+      <TabPanel value={value} index={0}>
+        One
+      </TabPanel>
+      <TabPanel value={value} index={1}>
+        Two
+      </TabPanel>
+      <TabPanel value={value} index={2}>
+        Three
+      </TabPanel>
+      {/* <MakerConsole
         indentOptions={indentOptions}
         setIndentOptions={setIndentOptions}
         indentLining={indentLining}
         handleIndentLiningChange={handleIndentLiningChange}
         setIndentLiningColor={setIndentLiningColor}
         setMarkerColor={setMarkerColor}
-      />
+      /> */}
       <Demonstration
         hasLine={indentLining}
         indentOptions={indentOptions}
