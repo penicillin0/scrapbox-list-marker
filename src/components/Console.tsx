@@ -1,10 +1,12 @@
-import { Tab, Tabs, Typography } from '@mui/material';
+import { Tab, Tabs } from '@mui/material';
 import { Box } from '@mui/system';
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { getLocalStorage, setLocalStorage } from '../utils/chromeApi';
 import { IndentOptionsType } from '../utils/types';
 import { Demonstration } from './Demonstration';
+import { MakerConsole } from './MakerConsole';
+import { SubConsole } from './SubConsole';
 
 const initialState: IndentOptionsType = [
   { value: '●', label: 'indent-1' },
@@ -32,11 +34,7 @@ const TabPanel: React.FC<TabPanelProps> = (props) => {
       aria-labelledby={`simple-tab-${index}`}
       {...other}
     >
-      {value === index && (
-        <Box sx={{ p: 3 }}>
-          <Typography>{children}</Typography>
-        </Box>
-      )}
+      {value === index && <Box sx={{ p: 0 }}>{children}</Box>}
     </div>
   );
 };
@@ -113,28 +111,34 @@ export const Console: React.FC<Props> = () => {
         aria-label="basic tabs example"
         textColor="primary"
         indicatorColor="secondary"
+        variant="fullWidth"
+        TabIndicatorProps={{
+          style: {
+            backgroundColor: '#FCFF18',
+          },
+        }}
       >
         <Tab label="One" />
         <Tab label="Two" />
         <Tab label="Three" />
       </Tabs>
       <TabPanel value={value} index={0}>
-        One
+        <MakerConsole
+          indentOptions={indentOptions}
+          setIndentOptions={setIndentOptions}
+          indentLining={indentLining}
+          handleIndentLiningChange={handleIndentLiningChange}
+          setIndentLiningColor={setIndentLiningColor}
+          setMarkerColor={setMarkerColor}
+        />
       </TabPanel>
       <TabPanel value={value} index={1}>
-        Two
+        <SubConsole />
       </TabPanel>
       <TabPanel value={value} index={2}>
         Three
       </TabPanel>
-      {/* <MakerConsole
-        indentOptions={indentOptions}
-        setIndentOptions={setIndentOptions}
-        indentLining={indentLining}
-        handleIndentLiningChange={handleIndentLiningChange}
-        setIndentLiningColor={setIndentLiningColor}
-        setMarkerColor={setMarkerColor}
-      /> */}
+
       <Demonstration
         hasLine={indentLining}
         indentOptions={indentOptions}
