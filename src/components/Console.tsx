@@ -114,13 +114,12 @@ export const Console: React.FC<Props> = () => {
         variant="fullWidth"
         TabIndicatorProps={{
           style: {
-            backgroundColor: '#FCFF18',
+            backgroundColor: '#05EB40',
           },
         }}
       >
-        <Tab label="One" />
-        <Tab label="Two" />
-        <Tab label="Three" />
+        <Tab label="Main Console" />
+        <Tab label="Sub Console" />
       </Tabs>
       <TabPanel value={value} index={0}>
         <MakerConsole
@@ -135,10 +134,6 @@ export const Console: React.FC<Props> = () => {
       <TabPanel value={value} index={1}>
         <SubConsole />
       </TabPanel>
-      <TabPanel value={value} index={2}>
-        Three
-      </TabPanel>
-
       <Demonstration
         hasLine={indentLining}
         indentOptions={indentOptions}
