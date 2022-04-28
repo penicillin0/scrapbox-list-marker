@@ -30,7 +30,6 @@ export const getIndentCssRule = (
     default:
       break;
   }
-  console.log(`${shapeCss} ${colorCss} }`);
   return `${shapeCss} ${colorCss} }`;
 };
 

@@ -81,7 +81,6 @@ const makerAttachment = () => {
         scrapboxMarkerColor,
         scrapboxMarkerColoring
       );
-      console.log(`scrapboxMarkerColoring`, scrapboxMarkerColoring);
     }
   );
 };
