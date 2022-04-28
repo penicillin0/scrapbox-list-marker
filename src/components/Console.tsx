@@ -164,6 +164,7 @@ export const Console: React.FC<Props> = () => {
         indentOptions={indentOptions}
         indentLiningColor={indentLiningColor}
         markerColor={markerColor}
+        isChangeColor={markerColoring}
       />
     </MainContainer>
   );
