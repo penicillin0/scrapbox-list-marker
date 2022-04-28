@@ -2,7 +2,11 @@
 
 import { getIndentCssRule, indentLineCss } from './cssGenerate.js';
 
-const insertIndentCSSRule = (scrapboxIndentOptions, scrapboxMarkerColor) => {
+const insertIndentCSSRule = (
+  scrapboxIndentOptions,
+  scrapboxMarkerColor,
+  scrapboxMarkerColoring
+) => {
   // delete existing rules
   const cssRules = document.styleSheets[0].cssRules;
   const cssRulesNum = cssRules.length;
@@ -26,7 +30,8 @@ const insertIndentCSSRule = (scrapboxIndentOptions, scrapboxMarkerColor) => {
         const css = getIndentCssRule(
           scrapboxIndentOption.value,
           i,
-          scrapboxMarkerColor
+          scrapboxMarkerColor,
+          scrapboxMarkerColoring
         );
         document.styleSheets[0].insertRule(css);
       }
@@ -65,25 +70,33 @@ const insertIndentLineCSSRule = (isLining, indentColor) => {
 };
 
 const makerAttachment = () => {
-  chrome.storage.local.get('scrapboxIndentOption', (result) => {
-    const scrapboxIndentOptions = result.scrapboxIndentOption;
-    chrome.storage.local.get('scrapboxMarkerColor', (result) => {
+  chrome.storage.local.get(
+    ['scrapboxIndentOption', 'scrapboxMarkerColor', 'scrapboxMarkerColoring'],
+    (result) => {
+      const scrapboxIndentOptions = result.scrapboxIndentOption;
       const scrapboxMarkerColor = result.scrapboxMarkerColor;
-      insertIndentCSSRule(scrapboxIndentOptions, scrapboxMarkerColor);
-    });
-  });
+      const scrapboxMarkerColoring = result.scrapboxMarkerColoring;
+      insertIndentCSSRule(
+        scrapboxIndentOptions,
+        scrapboxMarkerColor,
+        scrapboxMarkerColoring
+      );
+      console.log(`scrapboxMarkerColoring`, scrapboxMarkerColoring);
+    }
+  );
 };
 
 const liningAttachment = () => {
-  chrome.storage.local.get('scrapboxIndentLining', (result) => {
-    const isLining = result.scrapboxIndentLining;
-
-    chrome.storage.local.get('scrapboxIndentLineColor', (result) => {
+  chrome.storage.local.get(
+    ['scrapboxIndentLining', 'scrapboxIndentLineColor'],
+    (result) => {
+      const isLining = result.scrapboxIndentLining;
       const scrapboxIndentLineColor =
         result.scrapboxIndentLineColor || '#dcdcdc';
+
       insertIndentLineCSSRule(isLining, scrapboxIndentLineColor);
-    });
-  });
+    }
+  );
 };
 
 // update
@@ -102,6 +115,9 @@ chrome.storage.onChanged.addListener((changes) => {
         liningAttachment();
         break;
       case 'scrapboxMarkerColor':
+        makerAttachment();
+        break;
+      case 'scrapboxMarkerColoring':
         makerAttachment();
         break;
       default:

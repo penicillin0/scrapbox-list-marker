@@ -1,17 +1,37 @@
-export const getIndentCssRule = (marker, indentNumber, markerColor) => {
-  const insideColor = decideInsideColor(markerColor);
+export const getIndentCssRule = (
+  marker,
+  indentNumber,
+  markerColor,
+  coloring
+) => {
+  let shapeCss = `.c-${indentNumber} + .dot { height: .4em !important; width: .4em !important;`;
+  let colorCss = '';
   switch (marker) {
     case '●':
-      return `.c-${indentNumber} + .dot {height: .4em !important;width: .4em !important; border-color: ${markerColor} !important;border: solid .1em ${markerColor} !important; background-color: ${markerColor} !important;}`;
+      colorCss = coloring
+        ? `border-color: ${markerColor} !important;border: solid .1em ${markerColor} !important; background-color: ${markerColor} !important;`
+        : '';
+      break;
     case '○':
-      return `.c-${indentNumber} + .dot {height: .4em !important;width: .4em !important; border-color: black !important; border: solid .1em ${markerColor} !important; background-color: ${insideColor} !important;}`;
+      colorCss = coloring
+        ? `border-color: black !important; border: solid .1em ${markerColor} !important; background-color: rgba(0,0,0,0) !important;`
+        : `border: solid .1em var(--page-text-color, #555) !important; background-color: rgba(0,0,0,0) !important;`;
+      break;
     case '■':
-      return `.c-${indentNumber} + .dot {height: .4em !important;width: .4em !important; border-radius: 0% !important; background-color: ${markerColor} !important;}`;
+      shapeCss += ` border-radius: 0% !important;`;
+      colorCss = coloring ? `background-color: ${markerColor} !important;` : '';
+      break;
     case '□':
-      return `.c-${indentNumber} + .dot {height: .4em !important; width: .4em !important; border-radius: 0% !important; border: solid .1em ${markerColor} !important; background-color: ${insideColor} !important; }`;
+      shapeCss += ` border-radius: 0% !important;`;
+      colorCss = coloring
+        ? `border: solid .1em ${markerColor} !important; background-color: rgba(0,0,0,0) !important;`
+        : `border: solid .1em var(--page-text-color, #555) !important; background-color: rgba(0,0,0,0) !important;`;
+      break;
     default:
       break;
   }
+  console.log(`${shapeCss} ${colorCss} }`);
+  return `${shapeCss} ${colorCss} }`;
 };
 
 const makeRGB = (color) => {
@@ -34,13 +54,6 @@ const makeRGB = (color) => {
     ];
     return [red, green, blue];
   }
-};
-
-const decideInsideColor = (color) => {
-  const [red, green, blue] = makeRGB(color);
-  const insideColor =
-    red * 0.299 + green * 0.587 + blue * 0.114 > 186 ? '#111111' : '#eeeeee';
-  return insideColor;
 };
 
 export const indentLineCss = [
