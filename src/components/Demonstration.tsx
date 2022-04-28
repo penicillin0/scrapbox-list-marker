@@ -23,7 +23,7 @@ export const Demonstration: React.FC<Props> = (props) => {
         <IndentContainer>
           {props.indentOptions.map((indentOption) => {
             const spaceNum = +indentOption.label.replace(/[^0-9]/g, '') - 1;
-            return [...Array(spaceNum + 1)].map((i) => {
+            return [...Array(2)].map((i) => {
               return (
                 <Row key={i}>
                   {[...Array(spaceNum)].map((j) => {
@@ -56,7 +56,7 @@ export const Demonstration: React.FC<Props> = (props) => {
 };
 
 const MainContainer = styled.div<{ bgColor: string; textColor: string }>`
-  margin: 12px 14px;
+  margin: 10px 14px;
   padding: 6px 0px;
   border-radius: 2%;
   box-shadow: 0px 5px 5px -3px #9e9e9e;
@@ -73,7 +73,7 @@ const Main = styled.div<{ borderColor: string }>`
 const Title = styled.div`
   font-size: 16px;
   text-align: left;
-  margin: 10px 12px;
+  margin: 9px 12px;
 `;
 
 const IndentContainer = styled.div`

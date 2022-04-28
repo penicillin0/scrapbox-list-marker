@@ -43,8 +43,10 @@ export const Console: React.FC<Props> = () => {
   const [value, setValue] = useState<number>(0);
   const [indentOptions, setIndentOptions] =
     useState<IndentOptionsType>(initialState);
+
   const [markerColor, setMarkerColor] = useState<string>('#111111');
   const [indentLining, setIndentLining] = useState<boolean>(false);
+  const [markerColoring, setIsChangeColor] = useState<boolean>(false);
   const [indentLiningColor, setIndentLiningColor] = useState<string>('#dcdcdc');
 
   useEffect(() => {
@@ -81,6 +83,17 @@ export const Console: React.FC<Props> = () => {
         setIndentLiningColor(scrapboxIndentLineColor);
       }
 
+      const scrapboxMarkerColoring = await getLocalStorage<boolean | null>(
+        'scrapboxMarkerColoring'
+      );
+
+      if (!scrapboxMarkerColoring) {
+        setLocalStorage('scrapboxMarkerColoring', false);
+        setIsChangeColor(false);
+      } else {
+        setIsChangeColor(scrapboxMarkerColoring);
+      }
+
       const scrapboxMarkerColor = await getLocalStorage<string | null>(
         'scrapboxMarkerColor'
       );
@@ -97,6 +110,11 @@ export const Console: React.FC<Props> = () => {
   const handleIndentLiningChange = async (checked: boolean) => {
     await setLocalStorage<boolean>('scrapboxIndentLining', checked);
     setIndentLining(checked);
+  };
+
+  const handleMarKerColoringChange = async (checked: boolean) => {
+    await setLocalStorage<boolean>('scrapboxMarkerColoring', checked);
+    setIsChangeColor(checked);
   };
 
   const handleChange = (event: React.SyntheticEvent, newValue: number) => {
@@ -119,7 +137,7 @@ export const Console: React.FC<Props> = () => {
         }}
       >
         <Tab label="Main Console" />
-        <Tab label="Sub Console" />
+        <Tab label="Option" />
       </Tabs>
       <TabPanel value={value} index={0}>
         <MakerConsole
@@ -132,7 +150,14 @@ export const Console: React.FC<Props> = () => {
         />
       </TabPanel>
       <TabPanel value={value} index={1}>
-        <SubConsole />
+        <SubConsole
+          indentLining={indentLining}
+          handleIndentLiningChange={handleIndentLiningChange}
+          markerColoring={markerColoring}
+          setIndentLiningColor={setIndentLiningColor}
+          setMarkerColor={setMarkerColor}
+          handleMarKerColoringChange={handleMarKerColoringChange}
+        />
       </TabPanel>
       <Demonstration
         hasLine={indentLining}
