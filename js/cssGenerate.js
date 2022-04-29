@@ -33,28 +33,6 @@ export const getIndentCssRule = (
   return `${shapeCss} ${colorCss} }`;
 };
 
-const makeRGB = (color) => {
-  if (color.includes('rgba')) {
-    const [red, green, blue, _] = color
-      .substring(color.indexOf('(') + 1, color.lastIndexOf(')'))
-      .split(/,\s*/);
-    return [Number(red), Number(green), Number(blue)];
-  } else if (color.includes('rgb')) {
-    const [red, green, blue] = color
-      .substring(color.indexOf('(') + 1, color.lastIndexOf(')'))
-      .split(/,\s*/);
-    return [Number(red), Number(green), Number(blue)];
-  } else {
-    // hex to red, green, blue
-    const [red, green, blue] = [
-      parseInt(color.substring(1, 3), 16),
-      parseInt(color.substring(3, 5), 16),
-      parseInt(color.substring(5, 7), 16),
-    ];
-    return [red, green, blue];
-  }
-};
-
 export const indentLineCss = [
   `.app:not(.presentation) .indent-mark .char-index:not(:nth-last-child(1)):not(:nth-last-child(2)) { position: relative; }`,
   `.app:not(.presentation) .indent-mark .char-index:not(:nth-last-child(1)):not(:nth-last-child(2))::before {
