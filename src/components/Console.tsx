@@ -1,9 +1,12 @@
+import { Tab, Tabs } from '@mui/material';
+import { Box } from '@mui/system';
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { getLocalStorage, setLocalStorage } from '../utils/chromeApi';
 import { IndentOptionsType } from '../utils/types';
 import { Demonstration } from './Demonstration';
 import { MakerConsole } from './MakerConsole';
+import { SubConsole } from './SubConsole';
 
 const initialState: IndentOptionsType = [
   { value: '●', label: 'indent-1' },
@@ -14,11 +17,36 @@ const initialState: IndentOptionsType = [
 
 type Props = Record<string, never>;
 
+interface TabPanelProps {
+  children?: React.ReactNode;
+  index: number;
+  value: number;
+}
+
+const TabPanel: React.FC<TabPanelProps> = (props) => {
+  const { children, value, index, ...other } = props;
+
+  return (
+    <div
+      role="tabpanel"
+      hidden={value !== index}
+      id={`simple-tabpanel-${index}`}
+      aria-labelledby={`simple-tab-${index}`}
+      {...other}
+    >
+      {value === index && <Box sx={{ p: 0 }}>{children}</Box>}
+    </div>
+  );
+};
+
 export const Console: React.FC<Props> = () => {
+  const [value, setValue] = useState<number>(0);
   const [indentOptions, setIndentOptions] =
     useState<IndentOptionsType>(initialState);
+
   const [markerColor, setMarkerColor] = useState<string>('#111111');
   const [indentLining, setIndentLining] = useState<boolean>(false);
+  const [markerColoring, setIsChangeColor] = useState<boolean>(false);
   const [indentLiningColor, setIndentLiningColor] = useState<string>('#dcdcdc');
 
   useEffect(() => {
@@ -55,6 +83,17 @@ export const Console: React.FC<Props> = () => {
         setIndentLiningColor(scrapboxIndentLineColor);
       }
 
+      const scrapboxMarkerColoring = await getLocalStorage<boolean | null>(
+        'scrapboxMarkerColoring'
+      );
+
+      if (!scrapboxMarkerColoring) {
+        setLocalStorage('scrapboxMarkerColoring', false);
+        setIsChangeColor(false);
+      } else {
+        setIsChangeColor(scrapboxMarkerColoring);
+      }
+
       const scrapboxMarkerColor = await getLocalStorage<string | null>(
         'scrapboxMarkerColor'
       );
@@ -73,28 +112,72 @@ export const Console: React.FC<Props> = () => {
     setIndentLining(checked);
   };
 
+  const handleMarKerColoringChange = async (checked: boolean) => {
+    await setLocalStorage<boolean>('scrapboxMarkerColoring', checked);
+    setIsChangeColor(checked);
+  };
+
+  const handleChange = (event: React.SyntheticEvent, newValue: number) => {
+    setValue(newValue);
+  };
+
   return (
     <MainContainer>
-      <MakerConsole
-        indentOptions={indentOptions}
-        setIndentOptions={setIndentOptions}
-        indentLining={indentLining}
-        handleIndentLiningChange={handleIndentLiningChange}
-        setIndentLiningColor={setIndentLiningColor}
-        setMarkerColor={setMarkerColor}
-      />
+      <TabsContainer>
+        <Tabs
+          value={value}
+          onChange={handleChange}
+          aria-label="basic tabs example"
+          textColor="primary"
+          indicatorColor="secondary"
+          variant="fullWidth"
+          TabIndicatorProps={{
+            style: {
+              backgroundColor: '#05EB40',
+            },
+          }}
+        >
+          <Tab label="Main Console" />
+          <Tab label="Option" />
+        </Tabs>
+      </TabsContainer>
+      <TabPanel value={value} index={0}>
+        <MakerConsole
+          indentOptions={indentOptions}
+          setIndentOptions={setIndentOptions}
+          indentLining={indentLining}
+          handleIndentLiningChange={handleIndentLiningChange}
+          setIndentLiningColor={setIndentLiningColor}
+          setMarkerColor={setMarkerColor}
+        />
+      </TabPanel>
+      <TabPanel value={value} index={1}>
+        <SubConsole
+          indentLining={indentLining}
+          handleIndentLiningChange={handleIndentLiningChange}
+          markerColoring={markerColoring}
+          setIndentLiningColor={setIndentLiningColor}
+          setMarkerColor={setMarkerColor}
+          handleMarKerColoringChange={handleMarKerColoringChange}
+        />
+      </TabPanel>
       <Demonstration
         hasLine={indentLining}
         indentOptions={indentOptions}
         indentLiningColor={indentLiningColor}
         markerColor={markerColor}
+        isChangeColor={markerColoring}
       />
     </MainContainer>
   );
 };
 
 const MainContainer = styled.div`
-  background-color: #dcdde0;
+  background-color: #e1e1e1;
   padding: 4px;
   padding-bottom: 8px;
+`;
+
+const TabsContainer = styled.div`
+  border-bottom: 1.8px solid rgba(0, 0, 0, 0.1);
 `;

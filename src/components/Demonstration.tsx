@@ -8,6 +8,7 @@ type Props = {
   indentOptions: IndentOptionsType;
   indentLiningColor: string;
   markerColor: string;
+  isChangeColor: boolean;
 };
 
 export const Demonstration: React.FC<Props> = (props) => {
@@ -23,7 +24,7 @@ export const Demonstration: React.FC<Props> = (props) => {
         <IndentContainer>
           {props.indentOptions.map((indentOption) => {
             const spaceNum = +indentOption.label.replace(/[^0-9]/g, '') - 1;
-            return [...Array(spaceNum + 1)].map((i) => {
+            return [...Array(2)].map((i) => {
               return (
                 <Row key={i}>
                   {[...Array(spaceNum)].map((j) => {
@@ -39,7 +40,11 @@ export const Demonstration: React.FC<Props> = (props) => {
                     );
                   })}
                   <IndentContent>
-                    <IndentValue markerColor={props.markerColor}>
+                    <IndentValue
+                      markerColor={props.markerColor}
+                      isChangeColor={props.isChangeColor}
+                      baseColor={markerIsDark ? '#111111' : '#fefefe'}
+                    >
                       {indentOption.value}
                     </IndentValue>
                     &nbsp;&nbsp;&nbsp;
@@ -56,7 +61,7 @@ export const Demonstration: React.FC<Props> = (props) => {
 };
 
 const MainContainer = styled.div<{ bgColor: string; textColor: string }>`
-  margin: 12px 14px;
+  margin: 10px 14px;
   padding: 6px 0px;
   border-radius: 2%;
   box-shadow: 0px 5px 5px -3px #9e9e9e;
@@ -73,7 +78,7 @@ const Main = styled.div<{ borderColor: string }>`
 const Title = styled.div`
   font-size: 16px;
   text-align: left;
-  margin: 10px 12px;
+  margin: 9px 12px;
 `;
 
 const IndentContainer = styled.div`
@@ -111,11 +116,16 @@ const IndentContent = styled.div`
   align-items: center;
 `;
 
-const IndentValue = styled.span<{ markerColor: string }>`
+const IndentValue = styled.span<{
+  markerColor: string;
+  isChangeColor: boolean;
+  baseColor: string;
+}>`
   font-size: 10px;
   transform: scale(0.75);
   font-weight: bold;
-  color: ${(props) => props.markerColor};
+  color: ${(props) =>
+    props.isChangeColor ? props.markerColor : props.baseColor};
 `;
 
 const IndentOption = styled.span`
