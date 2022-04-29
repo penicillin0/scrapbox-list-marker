@@ -123,22 +123,24 @@ export const Console: React.FC<Props> = () => {
 
   return (
     <MainContainer>
-      <Tabs
-        value={value}
-        onChange={handleChange}
-        aria-label="basic tabs example"
-        textColor="primary"
-        indicatorColor="secondary"
-        variant="fullWidth"
-        TabIndicatorProps={{
-          style: {
-            backgroundColor: '#05EB40',
-          },
-        }}
-      >
-        <Tab label="Main Console" />
-        <Tab label="Option" />
-      </Tabs>
+      <TabsContainer>
+        <Tabs
+          value={value}
+          onChange={handleChange}
+          aria-label="basic tabs example"
+          textColor="primary"
+          indicatorColor="secondary"
+          variant="fullWidth"
+          TabIndicatorProps={{
+            style: {
+              backgroundColor: '#05EB40',
+            },
+          }}
+        >
+          <Tab label="Main Console" />
+          <Tab label="Option" />
+        </Tabs>
+      </TabsContainer>
       <TabPanel value={value} index={0}>
         <MakerConsole
           indentOptions={indentOptions}
@@ -171,7 +173,11 @@ export const Console: React.FC<Props> = () => {
 };
 
 const MainContainer = styled.div`
-  background-color: #dcdde0;
+  background-color: #e1e1e1;
   padding: 4px;
   padding-bottom: 8px;
+`;
+
+const TabsContainer = styled.div`
+  border-bottom: 1.8px solid rgba(0, 0, 0, 0.1);
 `;

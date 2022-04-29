@@ -92,12 +92,12 @@ const Title = styled.div`
 `;
 
 const IndentContainer = styled.div`
-  margin: 0px 10px;
+  margin: 0px 30px;
   position: relative;
 `;
 
 const IndentRow = styled.div<{ spaceNum: number }>`
-  margin-left: ${(props) => `${props.spaceNum * 30}px`};
+  margin-left: ${(props) => `${props.spaceNum * 32}px`};
   margin-top: 4px;
   margin-bottom: 4px;
   display: flex;

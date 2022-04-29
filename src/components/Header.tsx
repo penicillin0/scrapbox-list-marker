@@ -37,7 +37,6 @@ const Main = styled.div`
   align-items: center;
   justify-content: left;
   background-color: rgba(0, 180, 40, 0.8);
-  box-shadow: 0px 2px 3px 0px #9e9e9e;
   position: relative;
 `;
 
