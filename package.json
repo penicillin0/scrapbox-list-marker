@@ -3,9 +3,9 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "start": "react-scripts start",
-    "build": "INLINE_RUNTIME_CHUNK=false react-scripts build && webpack",
-    "test": "react-scripts test",
+    "start": "react-app-rewired start",
+    "build": "react-app-rewired build",
+    "test": "react-app-rewired test",
     "eject": "react-scripts eject",
     "lint": "eslint . --ext .js,.ts"
   },
@@ -60,9 +60,14 @@
     "@types/styled-components": "^5.1.15",
     "@typescript-eslint/eslint-plugin": "^5.3.1",
     "@typescript-eslint/parser": "^5.3.1",
+    "copy-webpack-plugin": "^10.2.4",
     "eslint": "^7.11.0",
     "eslint-plugin-react": "^7.27.0",
     "prettier": "^2.4.1",
+    "react-app-rewire-multiple-entry": "^2.2.2",
+    "react-app-rewire-typescript": "^2.0.2",
+    "react-app-rewired": "^2.2.1",
+    "rewire-js-entry": "^2.1.0",
     "typescript": "^4.1.2",
     "webpack-cli": "^4.9.1"
   },
